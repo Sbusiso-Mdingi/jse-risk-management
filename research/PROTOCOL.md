@@ -12,7 +12,7 @@ The original project (an R Shiny app, 2024) let a user pick JSE shares, drew 5,0
 
 ## Investable set at each rebalance
 
-At each month end, the 40 tickers with the highest median daily traded value (close times volume) over the previous 63 sessions, among those with at least 252 sessions of history and no more than 10% missing days in the estimation window. Ranking uses only data up to that close.
+At each month end, the 40 tickers with the highest median daily traded value (close times volume) over the previous 63 sessions, among those with at least 504 sessions of history (the longest window) and no more than 10% missing days in the last 504 sessions. Every rule and window therefore sees the same 40 names. Ranking uses only data up to that close.
 
 ## Rules
 
@@ -62,3 +62,8 @@ Applied to the frozen 30 September 2026 portfolios.
 - Hypothetical: every correlation raised to 0.9 with volatilities unchanged, and volatilities doubled with correlations unchanged; each reported as the change in 99% normal VaR. A 20% fall in the rand (USD/ZAR up 25%), applied through each holding's beta to USD/ZAR. The largest holding going to zero.
 
 These are illustrations, not tests.
+
+## Amendments
+
+- 13 October 2026, before any backtest: the history requirement was raised from 252 to 504 sessions so that the 504-session window never fills a missing year with averages, and every rule trades the same 40 names.
+- 13 October 2026, after the first stress run (an illustration, not a test): the rand scenario uses betas from 104 weekly (Wednesday) returns instead of daily ones. Yahoo's daily USD/ZAR close is not taken at the JSE close, and daily betas came out near zero for every share, including rand hedges.

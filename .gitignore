@@ -7,3 +7,4 @@ dashboard/dist/
 .env
 # Third-party market data (Yahoo Finance, FRED) is downloaded, not redistributed.
 data/raw/
+research/results/*.pkl

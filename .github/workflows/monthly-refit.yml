@@ -1,0 +1,60 @@
+# Rerun the pipeline every month and redeploy the dashboard.
+#
+# The 5th is late enough that the new month always has a JSE session, so the previous month
+# end counts as complete and gets a rebalance. Prices are downloaded fresh each run; the
+# parity tests must pass before anything is deployed.
+name: Monthly refit
+
+on:
+  schedule:
+    - cron: "0 4 5 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency: refit
+
+jobs:
+  refit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt pytest
+
+      - name: Download prices
+        run: python research/fetch.py
+      - name: Backtest
+        run: |
+          python research/backtest.py
+          python research/evaluate.py
+          python research/var_backtest.py
+          python research/stress_test.py
+          python research/export.py
+
+      - name: Parity tests
+        run: cd service && PYTHONPATH=..:. python -m pytest -q tests
+
+      - name: Commit the new record
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/research.json research/results/*.json
+          git diff --cached --quiet || git commit -m "Monthly refit to $(jq -r '.latest_rebalance' data/research.json)"
+          git push
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Deploy
+        env:
+          AZ_SUBSCRIPTION: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        run: TAG="refit-$(jq -r '.latest_rebalance' data/research.json)-${GITHUB_RUN_NUMBER}" bash deploy/azure.sh

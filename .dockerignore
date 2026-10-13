@@ -1,0 +1,7 @@
+.venv
+data/raw
+research/results
+dashboard/node_modules
+dashboard/dist
+**/__pycache__
+.git

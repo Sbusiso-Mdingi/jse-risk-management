@@ -5,6 +5,7 @@ data/raw/, which git ignores.
 """
 import concurrent.futures as cf
 import csv
+import json
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -16,6 +17,7 @@ RAW.mkdir(parents=True, exist_ok=True)
 EXTRA = ["STX40.JO", "^J200.JO", "ZAR=X"]
 TICKERS = [t.strip() for t in open("research/universe.txt") if t.strip()] + EXTRA
 UA = {"User-Agent": "Mozilla/5.0"}
+names: dict[str, str] = {}
 
 
 def path(sym: str) -> Path:
@@ -33,6 +35,7 @@ def fetch(sym: str):
                 return sym, "not found"
             r.raise_for_status()
             res = r.json()["chart"]["result"][0]
+            names[sym] = res["meta"].get("longName") or res["meta"].get("shortName") or sym
             ts = res.get("timestamp") or []
             q = res["indicators"]["quote"][0]
             adj = (res["indicators"].get("adjclose") or [{}])[0].get("adjclose") or q["close"]
@@ -59,5 +62,6 @@ if __name__ == "__main__":
     tbill()
     with cf.ThreadPoolExecutor(6) as ex:
         res = dict(ex.map(fetch, TICKERS))
+    (RAW / "names.json").write_text(json.dumps(names, indent=0, sort_keys=True))
     bad = {k: v for k, v in res.items() if not isinstance(v, int)}
     print(f"{len(res) - len(bad)} downloaded; not available: {bad}")
