@@ -1,0 +1,9 @@
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+dashboard/dist/
+.DS_Store
+.env
+# Third-party market data (Yahoo Finance, FRED) is downloaded, not redistributed.
+data/raw/
