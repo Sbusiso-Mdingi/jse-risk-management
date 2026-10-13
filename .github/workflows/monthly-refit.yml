@@ -1,4 +1,8 @@
-# Rerun the pipeline every month and redeploy the dashboard.
+# Rerun the pipeline and redeploy the dashboard.
+#
+# The monthly SCHEDULE now runs on Google Cloud Run (see deploy/cloudrun/), not here, so
+# the project does not depend on GitHub Actions billing. This workflow is kept for manual
+# runs should Actions billing be restored; its steps mirror deploy/cloudrun/pipeline.sh.
 #
 # The 5th is late enough that the new month always has a JSE session, so the previous month
 # end counts as complete and gets a rebalance. Prices are downloaded fresh each run; the
@@ -6,8 +10,6 @@
 name: Monthly refit
 
 on:
-  schedule:
-    - cron: "0 4 5 * *"
   workflow_dispatch:
 
 permissions:
