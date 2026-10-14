@@ -7,8 +7,8 @@ set -euo pipefail
 
 git config user.name "cloud-run-refit[bot]"
 git config user.email "cloud-run-refit@users.noreply.github.com"
-# Supply the push credential without ever writing the token into a tracked file.
-git config credential.helper '!f() { echo username=x-access-token; echo "password=${GH_TOKEN}"; }; f'
+# Push auth is the SSH deploy key configured by bootstrap.sh (GIT_SSH_COMMAND);
+# no token is ever written to a tracked file.
 
 pip install --no-cache-dir -r requirements.txt pytest
 
