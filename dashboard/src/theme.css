@@ -3,17 +3,17 @@
  * Shared tokens for every embedded project preview so they read as part of the portfolio.
  */
 :root {
-  --background: #f5f3ec;
-  --foreground: #202e29;
-  --surface: #ecebe2;
-  --primary: #315e4b;
-  --primary-foreground: #f5f3ec;
-  --muted-foreground: #4b5750;
-  --accent: #d6e2be;
-  --border: #d1d4c8;
-  --border-strong: #a0ab9a;
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+  --surface: #f4f4f4;
+  --primary: #1a1a1a;
+  --primary-foreground: #ffffff;
+  --muted-foreground: #555555;
+  --accent: #e8e8e8;
+  --border: #dcdcdc;
+  --border-strong: #a3a3a3;
   --negative: #a33222;
-  --positive: #315e4b;
+  --positive: #23805a;
   --font-sans: "Archivo", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
   --font-serif: "Newsreader", ui-serif, Georgia, serif;
@@ -350,7 +350,7 @@ th.num {
   text-align: right;
 }
 tr.final td {
-  background: #e6ead9;
+  background: #ececec;
 }
 .table-wrap {
   overflow-x: auto;
