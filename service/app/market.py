@@ -11,6 +11,8 @@ from datetime import datetime, timezone
 import httpx
 import pandas as pd
 
+from jserisk.data import with_dividends
+
 log = logging.getLogger("risk")
 UA = {"User-Agent": "Mozilla/5.0"}
 TTL = 6 * 3600
@@ -31,9 +33,13 @@ def _download(sym: str) -> pd.DataFrame:
             q = res["indicators"]["quote"][0]
             adj = (res["indicators"].get("adjclose") or [{}])[0].get("adjclose") or q["close"]
             dates = [datetime.fromtimestamp(t + 7200, timezone.utc).date() for t in res["timestamp"]]
-            df = pd.DataFrame({"date": pd.to_datetime(dates), "adjusted": adj, "close": q["close"], "volume": q["volume"]})
+            # Dividends by session, in the close's units; jserisk.data builds the total return from them.
+            div = {datetime.fromtimestamp(e["date"] + 7200, timezone.utc).date(): float(e["amount"])
+                   for e in ((res.get("events") or {}).get("dividends") or {}).values()}
+            df = pd.DataFrame({"date": pd.to_datetime(dates), "adjusted": adj, "close": q["close"], "volume": q["volume"],
+                               "dividend": [div.get(d, 0.0) for d in dates]})
             df = df.dropna(subset=["adjusted"]).drop_duplicates("date", keep="last").set_index("date").sort_index()
-            return df.astype(float)
+            return with_dividends(df.astype(float), sym)
         except Exception as exc:  # Yahoo resets connections under load
             last = exc
             time.sleep(1 + 2 * attempt)

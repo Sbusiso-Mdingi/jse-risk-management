@@ -330,7 +330,9 @@ function Tests({ research }: { research: Research }) {
   const best = research.tests[1].best as RuleId;
   const text: Record<string, string> = {
     P1: `Minimum variance ran at ${pct(v("R3").vol)} volatility, against ${pct(v("R1").vol)} for equal weight and ${pct(v("STX40").vol)} for the Satrix 40. Lower risk did not mean better returns: it made ${pct(v("R3").cagr)} a year with a Sharpe ratio of ${num(v("R3").sharpe)}, significantly worse than equal weight (t = ${num(p2.R3.t_stat, 1)}).`,
-    P2: `${ruleLabel(best)} had the best Sharpe ratio, ${num(v(best).sharpe)} against ${num(v("R1").sharpe)} for equal weight, but the gap is well within noise (t = ${num(p2[best].t_stat, 1)}). Equal risk contribution trailed equal weight (t = ${num(p2.R4.t_stat, 1)}). No rule beat simply holding the Satrix 40 (Sharpe ${num(v("STX40").sharpe)}).`,
+    P2: `${(v(best).sharpe ?? 0) > (v("R1").sharpe ?? 0)
+      ? `${ruleLabel(best)} had the best Sharpe ratio, ${num(v(best).sharpe)} against ${num(v("R1").sharpe)} for equal weight, but the gap is well within noise`
+      : `None of the three beat equal weight. The closest, ${ruleLabel(best).toLowerCase()}, had a Sharpe ratio of ${num(v(best).sharpe)} against ${num(v("R1").sharpe)} for equal weight`} (t = ${num(p2[best].t_stat, 1)}). Equal risk contribution trailed equal weight (t = ${num(p2.R4.t_stat, 1)}). No rule beat simply holding the Satrix 40 (Sharpe ${num(v("STX40").sharpe)}).`,
     P3: `The original app's method made ${pct(v("R0").cagr)} a year with a Sharpe ratio of ${num(v("R0").sharpe)}, below equal weight (t = ${num(p3.t_stat, 1)}). Picking the best of 5,000 random portfolios mostly picks the luckiest past means, and those do not repeat.`,
   };
   return (

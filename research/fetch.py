@@ -39,12 +39,17 @@ def fetch(sym: str):
             ts = res.get("timestamp") or []
             q = res["indicators"]["quote"][0]
             adj = (res["indicators"].get("adjclose") or [{}])[0].get("adjclose") or q["close"]
+            # Dividends by session, in the same units as the close (cents for JSE shares). Yahoo's own adjusted
+            # close carries about a hundredth of them, so jserisk.data builds the total return from these.
+            div = {datetime.fromtimestamp(e["date"] + 7200, timezone.utc).date().isoformat(): float(e["amount"])
+                   for e in ((res.get("events") or {}).get("dividends") or {}).values()}
             with open(path(sym), "w", newline="") as f:
                 w = csv.writer(f)
-                w.writerow(["date", "adjusted", "close", "volume"])
+                w.writerow(["date", "adjusted", "close", "volume", "dividend"])
                 for t, a, c, v in zip(ts, adj, q["close"], q["volume"]):
                     # JSE sessions close at 17:00 SAST; the timestamp is the session open.
-                    w.writerow([datetime.fromtimestamp(t + 7200, timezone.utc).date().isoformat(), a, c, v])
+                    d = datetime.fromtimestamp(t + 7200, timezone.utc).date().isoformat()
+                    w.writerow([d, a, c, v, div.get(d, 0.0)])
             return sym, len(ts)
         except Exception as exc:  # retried: Yahoo resets connections under load
             err = exc

@@ -8,18 +8,18 @@ Design January 2008 to December 2016; validation January 2017 to September 2026.
 
 | Rule | Window | Design Sharpe | Validation CAGR | Volatility | Sharpe | Max drawdown |
 | --- | --- | --- | --- | --- | --- | --- |
-| R0 Original app | 156 | 0.10 | 3.1% | 18.6% | −0.09 | −48.1% |
-| R1 Equal weight | 252 | 0.10 | 6.7% | 18.5% | 0.09 | −45.7% |
-| R2 Inverse volatility | 252 | 0.17 | 4.0% | 17.4% | −0.07 | −47.7% |
-| R3 Minimum variance | 504 | 0.29 | −0.6% | 14.8% | −0.41 | −45.8% |
-| R4 Equal risk contribution | 504 | 0.15 | 4.8% | 16.6% | −0.03 | −44.1% |
-| R5 Maximum Sharpe | 252 | 0.40 | 8.4% | 20.0% | 0.18 | −37.0% |
-|  Satrix 40 ETF |  | 0.22 | 9.3% | 18.8% | 0.22 | −37.3% |
+| R0 Original app | 156 | 0.31 | 7.7% | 18.2% | 0.14 | −43.0% |
+| R1 Equal weight | 252 | 0.29 | 11.5% | 18.5% | 0.33 | −40.6% |
+| R2 Inverse volatility | 252 | 0.38 | 8.8% | 17.4% | 0.20 | −42.3% |
+| R3 Minimum variance | 504 | 0.55 | 4.0% | 14.8% | −0.10 | −39.2% |
+| R4 Equal risk contribution | 504 | 0.36 | 9.6% | 16.5% | 0.24 | −38.5% |
+| R5 Maximum Sharpe | 252 | 0.59 | 11.3% | 19.5% | 0.31 | −36.6% |
+|  Satrix 40 ETF |  | 0.28 | 12.7% | 18.6% | 0.39 | −34.2% |
 
-- **P1 passed.** Minimum variance ran at 14.8% volatility against 18.5% for equal weight and 18.8% for the Satrix 40. It also returned −0.6% a year, with a Sharpe ratio significantly below equal weight (t = −2.94). Its largest average holdings over validation were BAT (at the 10% cap), AB InBev, Vodacom, Mondi, Clicks and Growthpoint.
-- **P2 passed, within noise.** Maximum Sharpe beat equal weight by 0.09 in annual Sharpe (t = 0.42); equal risk contribution trailed (t = −1.85). In design, maximum Sharpe was also the best rule, so this is at least consistent, but it is not evidence of skill.
-- **P3 failed.** The original app's method trailed equal weight by 0.18 in annual Sharpe (t = −2.36), with about 35% one-way turnover a month against 6% for equal weight.
-- **No rule beat the Satrix 40** on Sharpe in validation. The closest was maximum Sharpe (t = −0.23).
+- **P1 passed.** Minimum variance ran at 14.8% volatility against 18.5% for equal weight and 18.6% for the Satrix 40. It also returned 4.0% a year, with a Sharpe ratio significantly below equal weight (t = −2.61).
+- **P2 failed.** None of minimum variance, equal risk contribution and maximum Sharpe beat equal weight. The closest, maximum Sharpe, had a Sharpe ratio of 0.31 against 0.33 (t = −0.07); equal risk contribution trailed (t = −1.35). Before the dividend correction (below) maximum Sharpe was ahead by 0.09 (t = 0.42) and P2 was recorded as passed within noise; that lead came from the price data, not the rule.
+- **P3 failed.** The original app's method trailed equal weight by 0.19 in annual Sharpe (t = −2.58).
+- **No rule beat the Satrix 40** on Sharpe in validation. The closest was maximum Sharpe (t = −0.37).
 
 ## Value at risk and expected shortfall
 
@@ -27,18 +27,18 @@ One-day forecasts over validation, 2,421 sessions. Pass: Christoffersen conditio
 
 | Portfolio | Model | 99% exceedances / expected | p (cc) | 97.5% exceedances / expected | p (cc) | ES Z2 | Verdict |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| R1 | Historical simulation | 34 / 24 | 0.007 | 70 / 61 | 0.030 | −0.26 | failed |
-| R1 | Normal | 40 / 24 | 0.000 | 72 / 61 | 0.078 | −0.48 | failed |
-| R1 | EWMA (RiskMetrics) | 44 / 24 | 0.000 | 82 / 61 | 0.023 | −0.52 | failed |
-| R1 | Filtered historical (GJR-GARCH-t) | 25 / 24 | 0.083 | 58 / 61 | 0.450 | 0.01 | passed |
-| R3 | Historical simulation | 30 / 24 | 0.011 | 70 / 61 | 0.000 | −0.27 | failed |
-| R3 | Normal | 36 / 24 | 0.001 | 64 / 61 | 0.000 | −0.36 | failed |
-| R3 | EWMA (RiskMetrics) | 53 / 24 | 0.000 | 88 / 61 | 0.003 | −0.65 | failed |
-| R3 | Filtered historical (GJR-GARCH-t) | 24 / 24 | 0.497 | 59 / 61 | 0.884 | −0.00 | passed |
-| STX40 | Historical simulation | 36 / 24 | 0.023 | 72 / 61 | 0.175 | −0.32 | failed |
-| STX40 | Normal | 47 / 24 | 0.000 | 80 / 61 | 0.039 | −0.64 | failed |
-| STX40 | EWMA (RiskMetrics) | 47 / 24 | 0.000 | 86 / 61 | 0.004 | −0.60 | failed |
-| STX40 | Filtered historical (GJR-GARCH-t) | 23 / 24 | 0.450 | 64 / 61 | 0.584 | −0.09 | passed |
+| R1 | Historical simulation | 33 / 24 | 0.008 | 72 / 61 | 0.027 | −0.29 | failed |
+| R1 | Normal | 41 / 24 | 0.000 | 74 / 61 | 0.023 | −0.51 | failed |
+| R1 | EWMA (RiskMetrics) | 40 / 24 | 0.001 | 82 / 61 | 0.023 | −0.51 | failed |
+| R1 | Filtered historical (GJR-GARCH-t) | 26 / 24 | 0.091 | 60 / 61 | 0.530 | −0.02 | passed |
+| R3 | Historical simulation | 29 / 24 | 0.011 | 66 / 61 | 0.000 | −0.22 | failed |
+| R3 | Normal | 37 / 24 | 0.000 | 64 / 61 | 0.000 | −0.37 | failed |
+| R3 | EWMA (RiskMetrics) | 48 / 24 | 0.000 | 84 / 61 | 0.015 | −0.57 | failed |
+| R3 | Filtered historical (GJR-GARCH-t) | 24 / 24 | 0.497 | 57 / 61 | 0.402 | 0.02 | passed |
+| STX40 | Historical simulation | 35 / 24 | 0.032 | 70 / 61 | 0.216 | −0.29 | failed |
+| STX40 | Normal | 45 / 24 | 0.000 | 76 / 61 | 0.094 | −0.57 | failed |
+| STX40 | EWMA (RiskMetrics) | 46 / 24 | 0.000 | 78 / 61 | 0.033 | −0.48 | failed |
+| STX40 | Filtered historical (GJR-GARCH-t) | 26 / 24 | 0.527 | 67 / 61 | 0.261 | −0.13 | passed |
 
 The normal model fails at 99% everywhere, and filtered historical simulation passes everywhere. Plain historical simulation fails on clustered exceedances for equal weight and minimum variance, and on the count for the Satrix 40.
 
@@ -48,15 +48,30 @@ Portfolios set at the 30 September 2026 rebalance. Peak-to-trough windows of the
 
 | Portfolio | 2008 crisis | Dec 2015 | Covid 2020 | Apr 2025 tariffs |
 | --- | --- | --- | --- | --- |
-| Original app | −28.4% | −2.1% | −36.6% | −10.4% |
-| Equal weight | −28.4% | −3.0% | −37.5% | −10.6% |
-| Minimum variance | −11.2% | −1.6% | −29.3% | −5.3% |
-| Maximum Sharpe | −17.2% | −4.9% | −39.2% | −10.8% |
+| Original app | −21.3% | −4.3% | −34.5% | −9.2% |
+| Equal weight | −27.1% | −3.1% | −37.0% | −10.3% |
+| Minimum variance | −11.1% | −1.8% | −29.0% | −5.2% |
+| Maximum Sharpe | −10.5% | −3.9% | −35.4% | −9.1% |
 | Top 40 index | −49.2% | −2.2% | −34.6% | −9.3% |
 
 Today's holdings are survivors, so the 2008 figures in particular flatter every rule; 54% of minimum variance's weight in the 2008 window (30% for equal weight) is proxied by beta because those shares had no prices then.
 
 ## Amendments and corrections
+
+- **12 November 2026: prices now include dividends.** Yahoo's adjusted close for JSE shares carries only about a hundredth of each dividend (the dividend in cents applied as if in rand), so every figure before this date was in effect on price returns, for the shares and for the Satrix 40. Across the 256 shares with enough history, the adjusted series carried a median 0.04% a year of dividends. Prices are now total returns built from Yahoo's close and its dividend events (`jserisk/data.py`, `with_dividends`): a dividend above 25% of the previous close is taken to be 100 times too large (Yahoo's amounts are sometimes in hundredths of a cent), one between 10% and 25% takes whichever unit the ex-date price drop fits, the same amount listed again within 45 days counts once (the Satrix 40's distributions were listed two or three times each to 2024), and the twelve preference shares keep Yahoo's own series (their prices and amounts switch between rand and cents). The correction adds a median 3.5% a year to the shares and 3.1% to the Satrix 40 over 2015 to September 2026. Same data, before and after, validation January 2017 to September 2026:
+
+  | | Before (price only) | After (total return) |
+  | --- | --- | --- |
+  | Equal weight: CAGR, Sharpe | 6.7%, 0.09 | 11.5%, 0.33 |
+  | Maximum Sharpe: CAGR, Sharpe | 8.4%, 0.18 | 11.3%, 0.31 |
+  | Minimum variance: CAGR, Sharpe | −0.6%, −0.41 | 4.0%, −0.10 |
+  | Original app: CAGR, Sharpe | 3.1%, −0.09 | 7.7%, 0.14 |
+  | Satrix 40: CAGR, Sharpe | 9.3%, 0.22 | 12.7%, 0.39 |
+  | P1 (minimum variance less volatile) | passed | passed |
+  | P2 (a covariance rule beats equal weight) | passed, within noise (t = 0.42) | failed (t = −0.07) |
+  | P3 (original beats equal weight) | failed (t = −2.36) | failed (t = −2.58) |
+
+  Volatilities, the VaR verdicts (only filtered historical simulation passes) and the stress results barely move. The lookback windows chosen on design are unchanged. The live books from the freeze are recomputed on the corrected prices: equal weight and the original method hold the same weights, minimum variance and the other covariance rules differ by about 1%, and maximum Sharpe by 6 to 8% of the portfolio. Recorded in `PROTOCOL.md`.
 
 - The history requirement for the investable set was raised from 252 to 504 sessions before any backtest (see `PROTOCOL.md`).
 - The GJR-GARCH refit first ran one session late (data up to the first session of a month instead of the month end). Fixed before writing up; the results were nearly unchanged.

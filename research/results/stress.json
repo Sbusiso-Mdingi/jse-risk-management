@@ -6,8 +6,8 @@
     "label": "2008 financial crisis",
     "start": "2008-05-22",
     "end": "2008-11-20",
-    "index_return": -0.4921000490599219,
-    "portfolio_return": -0.22604395180620515,
+    "index_return": -0.49210004905992244,
+    "portfolio_return": -0.21287628289046137,
     "proxied": [
      "PRX.JO",
      "SSW.JO",
@@ -27,28 +27,28 @@
     "worst": [
      {
       "ticker": "PAN.JO",
-      "return": -0.5789472070010763,
-      "contribution": -0.03279827958042629
+      "return": -0.578947203449317,
+      "contribution": -0.03279827937921349
      },
      {
       "ticker": "NPH.JO",
-      "return": -1.0879144964668421,
-      "contribution": -0.030010777067077273
+      "return": -1.082235320117321,
+      "contribution": -0.02985411356465717
      },
      {
       "ticker": "BHG.JO",
-      "return": -0.3912759461714863,
-      "contribution": -0.020659831325436175
-     },
-     {
-      "ticker": "GFI.JO",
-      "return": -0.46534561594757873,
-      "contribution": -0.019665177655828904
+      "return": -0.39413520240221966,
+      "contribution": -0.020810803425871053
      },
      {
       "ticker": "SSW.JO",
-      "return": -1.1478891058084553,
-      "contribution": -0.019657709444207912
+      "return": -1.140391056428003,
+      "contribution": -0.019529304639794822
+     },
+     {
+      "ticker": "GFI.JO",
+      "return": -0.45062417424885937,
+      "contribution": -0.01904305990843004
      }
     ]
    },
@@ -57,8 +57,8 @@
     "label": "Finance minister change, Dec 2015",
     "start": "2015-12-09",
     "end": "2015-12-11",
-    "index_return": -0.022160195270898075,
-    "portfolio_return": -0.043434690366858035,
+    "index_return": -0.022160195270897853,
+    "portfolio_return": -0.04344402356905098,
     "proxied": [
      "PRX.JO",
      "SSW.JO",
@@ -75,28 +75,28 @@
     "worst": [
      {
       "ticker": "DSY.JO",
-      "return": -0.16605173240878157,
-      "contribution": -0.009684174913628834
+      "return": -0.16605166051660514,
+      "contribution": -0.009684170720860705
      },
      {
       "ticker": "ABG.JO",
-      "return": -0.17089316896785445,
-      "contribution": -0.009068779203820177
+      "return": -0.1708930540242557,
+      "contribution": -0.009068773104114
      },
      {
       "ticker": "CPI.JO",
-      "return": -0.15559448729650105,
-      "contribution": -0.007893400286580345
+      "return": -0.15559440559440563,
+      "contribution": -0.007893396141784763
      },
      {
       "ticker": "NED.JO",
-      "return": -0.1571914155505898,
-      "contribution": -0.007418830516772996
+      "return": -0.15719130261320557,
+      "contribution": -0.00741882518656263
      },
      {
       "ticker": "GRT.JO",
-      "return": -0.1707827645072505,
-      "contribution": -0.005945178943217051
+      "return": -0.17078275429049816,
+      "contribution": -0.005945178587558088
      }
     ]
    },
@@ -105,8 +105,8 @@
     "label": "Covid crash, 2020",
     "start": "2020-02-17",
     "end": "2020-03-19",
-    "index_return": -0.34604870743828975,
-    "portfolio_return": -0.34721998969923473,
+    "index_return": -0.3460487074382895,
+    "portfolio_return": -0.34476670596948417,
     "proxied": [
      "SSW.JO",
      "NPH.JO",
@@ -117,28 +117,28 @@
     "worst": [
      {
       "ticker": "CPI.JO",
-      "return": -0.5260416406365608,
-      "contribution": -0.026686403285235145
+      "return": -0.5260416666666666,
+      "contribution": -0.0266864046057578
      },
      {
       "ticker": "DSY.JO",
-      "return": -0.4413334484483451,
-      "contribution": -0.025738667390035264
+      "return": -0.43362193152845785,
+      "contribution": -0.02528892996412421
      },
      {
       "ticker": "NED.JO",
-      "return": -0.5334294215924481,
-      "contribution": -0.025175818015208233
+      "return": -0.533429294684072,
+      "contribution": -0.025175812025620758
      },
      {
       "ticker": "ABG.JO",
-      "return": -0.45730803705029477,
-      "contribution": -0.024267942605252092
+      "return": -0.45730795377294353,
+      "contribution": -0.024267938185977084
      },
      {
       "ticker": "NPH.JO",
-      "return": -0.7650302129108029,
-      "contribution": -0.021103819504021584
+      "return": -0.7610365704821526,
+      "contribution": -0.020993652470673762
      }
     ]
    },
@@ -148,34 +148,34 @@
     "start": "2025-04-01",
     "end": "2025-04-04",
     "index_return": -0.09320885226463993,
-    "portfolio_return": -0.09347964153819563,
+    "portfolio_return": -0.0917553095937268,
     "proxied": [],
     "proxied_weight": 0.0,
     "worst": [
      {
       "ticker": "CPI.JO",
-      "return": -0.13780848415574154,
-      "contribution": -0.006991105836900655
+      "return": -0.13780848264971057,
+      "contribution": -0.006991105760498813
      },
      {
       "ticker": "DSY.JO",
-      "return": -0.11874061064263752,
-      "contribution": -0.006924979499663366
+      "return": -0.11874057131733906,
+      "contribution": -0.006924977206202988
      },
      {
       "ticker": "NPH.JO",
-      "return": -0.2350394277786909,
-      "contribution": -0.006483704272668167
+      "return": -0.23503948967193178,
+      "contribution": -0.00648370598003052
      },
      {
       "ticker": "ABG.JO",
-      "return": -0.11565583301326277,
-      "contribution": -0.006137502274467564
+      "return": -0.11565577439570263,
+      "contribution": -0.006137499163812447
      },
      {
       "ticker": "SHP.JO",
-      "return": -0.0998956029967254,
-      "contribution": -0.005969130231886384
+      "return": -0.09989567970070845,
+      "contribution": -0.0059691348152319
      }
     ]
    }
@@ -184,20 +184,20 @@
    {
     "key": "corr",
     "label": "Every correlation at 0.9",
-    "var99_before": 0.02157501767040652,
-    "var99_after": 0.04255162696511805
+    "var99_before": 0.0216044232650371,
+    "var99_after": 0.04219993533857605
    },
    {
     "key": "vol",
     "label": "Volatilities doubled",
-    "var99_before": 0.02157501767040652,
-    "var99_after": 0.04315003534081304
+    "var99_before": 0.0216044232650371,
+    "var99_after": 0.0432088465300742
    },
    {
     "key": "rand",
     "label": "Rand falls 20% against the dollar",
-    "portfolio_return": -0.08484413961541876,
-    "rand_beta": -0.38022223414356804
+    "portfolio_return": -0.08423210669930559,
+    "rand_beta": -0.37747945752058887
    },
    {
     "key": "default",
@@ -213,8 +213,8 @@
     "label": "2008 financial crisis",
     "start": "2008-05-22",
     "end": "2008-11-20",
-    "index_return": -0.4921000490599219,
-    "portfolio_return": -0.2834320039972771,
+    "index_return": -0.49210004905992244,
+    "portfolio_return": -0.27126318412989725,
     "proxied": [
      "PRX.JO",
      "SSW.JO",
@@ -234,28 +234,28 @@
     "worst": [
      {
       "ticker": "SSW.JO",
-      "return": -1.1478891058084553,
-      "contribution": -0.028697227645211383
+      "return": -1.140391056428003,
+      "contribution": -0.02850977641070008
      },
      {
       "ticker": "NPH.JO",
-      "return": -1.0879144964668421,
-      "contribution": -0.027197862411671055
+      "return": -1.082235320117321,
+      "contribution": -0.027055883002933025
      },
      {
       "ticker": "IMP.JO",
-      "return": -0.7343102316826915,
-      "contribution": -0.018357755792067287
+      "return": -0.7175064480471628,
+      "contribution": -0.01793766120117907
      },
      {
       "ticker": "VAL.JO",
-      "return": -0.7233023881912806,
-      "contribution": -0.018082559704782016
+      "return": -0.7123926916553471,
+      "contribution": -0.01780981729138368
      },
      {
       "ticker": "AGL.JO",
-      "return": -0.6863177286379664,
-      "contribution": -0.01715794321594916
+      "return": -0.683371277758133,
+      "contribution": -0.017084281943953325
      }
     ]
    },
@@ -264,8 +264,8 @@
     "label": "Finance minister change, Dec 2015",
     "start": "2015-12-09",
     "end": "2015-12-11",
-    "index_return": -0.022160195270898075,
-    "portfolio_return": -0.03119162876673956,
+    "index_return": -0.022160195270897853,
+    "portfolio_return": -0.031195863525298535,
     "proxied": [
      "PRX.JO",
      "SSW.JO",
@@ -282,28 +282,28 @@
     "worst": [
      {
       "ticker": "FSR.JO",
-      "return": -0.21909970683561109,
-      "contribution": -0.005477492670890278
+      "return": -0.21909989023051601,
+      "contribution": -0.005477497255762901
      },
      {
       "ticker": "SLM.JO",
-      "return": -0.18094734156626857,
-      "contribution": -0.004523683539156715
+      "return": -0.18094740508533613,
+      "contribution": -0.004523685127133403
      },
      {
       "ticker": "SBK.JO",
-      "return": -0.17144713776098175,
-      "contribution": -0.0042861784440245436
+      "return": -0.1714472501430091,
+      "contribution": -0.004286181253575228
      },
      {
       "ticker": "ABG.JO",
-      "return": -0.17089316896785445,
-      "contribution": -0.004272329224196361
+      "return": -0.1708930540242557,
+      "contribution": -0.004272326350606393
      },
      {
       "ticker": "GRT.JO",
-      "return": -0.1707827645072505,
-      "contribution": -0.004269569112681263
+      "return": -0.17078275429049816,
+      "contribution": -0.004269568857262454
      }
     ]
    },
@@ -312,8 +312,8 @@
     "label": "Covid crash, 2020",
     "start": "2020-02-17",
     "end": "2020-03-19",
-    "index_return": -0.34604870743828975,
-    "portfolio_return": -0.3731257414097695,
+    "index_return": -0.3460487074382895,
+    "portfolio_return": -0.37037184047545096,
     "proxied": [
      "SSW.JO",
      "NPH.JO",
@@ -324,28 +324,28 @@
     "worst": [
      {
       "ticker": "SOL.JO",
-      "return": -0.8689804669726628,
-      "contribution": -0.021724511674316573
+      "return": -0.8689804772234273,
+      "contribution": -0.021724511930585683
      },
      {
       "ticker": "SSW.JO",
-      "return": -0.8072048399636329,
-      "contribution": -0.020180120999090823
+      "return": -0.8019321514089958,
+      "contribution": -0.020048303785224895
      },
      {
       "ticker": "NPH.JO",
-      "return": -0.7650302129108029,
-      "contribution": -0.019125755322770072
+      "return": -0.7610365704821526,
+      "contribution": -0.019025914262053814
      },
      {
       "ticker": "VAL.JO",
-      "return": -0.6668931162629009,
-      "contribution": -0.016672327906572523
+      "return": -0.6546180898525209,
+      "contribution": -0.016365452246313025
      },
      {
       "ticker": "IMP.JO",
-      "return": -0.656445014723301,
-      "contribution": -0.016411125368082525
+      "return": -0.6490473715793732,
+      "contribution": -0.01622618428948433
      }
     ]
    },
@@ -355,7 +355,7 @@
     "start": "2025-04-01",
     "end": "2025-04-04",
     "index_return": -0.09320885226463993,
-    "portfolio_return": -0.10482610802178806,
+    "portfolio_return": -0.10265316975121967,
     "proxied": [],
     "proxied_weight": 0.0,
     "worst": [
@@ -366,23 +366,23 @@
      },
      {
       "ticker": "IMP.JO",
-      "return": -0.2476605042634431,
-      "contribution": -0.006191512606586078
+      "return": -0.24766048267936291,
+      "contribution": -0.006191512066984073
      },
      {
       "ticker": "NPH.JO",
-      "return": -0.2350394277786909,
-      "contribution": -0.005875985694467273
+      "return": -0.23503948967193178,
+      "contribution": -0.005875987241798295
      },
      {
       "ticker": "VAL.JO",
-      "return": -0.22015325161369215,
-      "contribution": -0.005503831290342304
+      "return": -0.2201532961378041,
+      "contribution": -0.005503832403445103
      },
      {
       "ticker": "SSW.JO",
-      "return": -0.20974669797633383,
-      "contribution": -0.005243667449408346
+      "return": -0.20974677496416627,
+      "contribution": -0.005243669374104157
      }
     ]
    }
@@ -391,20 +391,20 @@
    {
     "key": "corr",
     "label": "Every correlation at 0.9",
-    "var99_before": 0.023536929484683174,
-    "var99_after": 0.04595186428733656
+    "var99_before": 0.023582787230723455,
+    "var99_after": 0.0456081011559112
    },
    {
     "key": "vol",
     "label": "Volatilities doubled",
-    "var99_before": 0.023536929484683174,
-    "var99_after": 0.04707385896936635
+    "var99_before": 0.023582787230723455,
+    "var99_after": 0.04716557446144691
    },
    {
     "key": "rand",
     "label": "Rand falls 20% against the dollar",
-    "portfolio_return": -0.10097115372964502,
-    "rand_beta": -0.4524941596338894
+    "portfolio_return": -0.10006542692024858,
+    "rand_beta": -0.44843521728909774
    },
    {
     "key": "default",
@@ -420,8 +420,8 @@
     "label": "2008 financial crisis",
     "start": "2008-05-22",
     "end": "2008-11-20",
-    "index_return": -0.4921000490599219,
-    "portfolio_return": -0.21208514957910524,
+    "index_return": -0.49210004905992244,
+    "portfolio_return": -0.19796527770531308,
     "proxied": [
      "PRX.JO",
      "SSW.JO",
@@ -437,32 +437,32 @@
      "RNI.JO",
      "GRT.JO"
     ],
-    "proxied_weight": 0.3575924413932489,
+    "proxied_weight": 0.3599175741141581,
     "worst": [
      {
       "ticker": "EXX.JO",
-      "return": -0.6331908013213564,
-      "contribution": -0.01671598975174608
+      "return": -0.6264997632368156,
+      "contribution": -0.01671078645881764
      },
      {
       "ticker": "SSW.JO",
-      "return": -1.1478891058084553,
-      "contribution": -0.013429688329296384
+      "return": -1.140391056428003,
+      "contribution": -0.0133092296050063
      },
      {
       "ticker": "NPH.JO",
-      "return": -1.0879144964668421,
-      "contribution": -0.01314510387147133
+      "return": -1.082235320117321,
+      "contribution": -0.013049502863510755
      },
      {
       "ticker": "AGL.JO",
-      "return": -0.6863177286379664,
-      "contribution": -0.013069208946605928
+      "return": -0.683371277758133,
+      "contribution": -0.01289176048060355
      },
      {
       "ticker": "OMU.JO",
-      "return": -0.3263697084156124,
-      "contribution": -0.010129371737329715
+      "return": -0.3301700299088315,
+      "contribution": -0.010131616875561014
      }
     ]
    },
@@ -471,8 +471,8 @@
     "label": "Finance minister change, Dec 2015",
     "start": "2015-12-09",
     "end": "2015-12-11",
-    "index_return": -0.022160195270898075,
-    "portfolio_return": -0.054325770766140424,
+    "index_return": -0.022160195270897853,
+    "portfolio_return": -0.05422745241793989,
     "proxied": [
      "PRX.JO",
      "SSW.JO",
@@ -485,32 +485,32 @@
      "OMU.JO",
      "RNI.JO"
     ],
-    "proxied_weight": 0.25309264744145366,
+    "proxied_weight": 0.25125731939140417,
     "worst": [
      {
       "ticker": "FSR.JO",
-      "return": -0.21909970683561109,
-      "contribution": -0.006596223366534224
+      "return": -0.21909989023051601,
+      "contribution": -0.006613473533122796
      },
      {
       "ticker": "GRT.JO",
-      "return": -0.1707827645072505,
-      "contribution": -0.0058415138416295235
+      "return": -0.17078275429049816,
+      "contribution": -0.005945396094415667
      },
      {
       "ticker": "DSY.JO",
-      "return": -0.16605173240878157,
-      "contribution": -0.00533110951077739
-     },
-     {
-      "ticker": "SLM.JO",
-      "return": -0.18094734156626857,
-      "contribution": -0.005235875037809821
+      "return": -0.16605166051660514,
+      "contribution": -0.005309922761055183
      },
      {
       "ticker": "SBK.JO",
-      "return": -0.17144713776098175,
-      "contribution": -0.005203420150569785
+      "return": -0.1714472501430091,
+      "contribution": -0.005252172859975698
+     },
+     {
+      "ticker": "CPI.JO",
+      "return": -0.15559440559440563,
+      "contribution": -0.005066160952363921
      }
     ]
    },
@@ -519,40 +519,40 @@
     "label": "Covid crash, 2020",
     "start": "2020-02-17",
     "end": "2020-03-19",
-    "index_return": -0.34604870743828975,
-    "portfolio_return": -0.35668586552578324,
+    "index_return": -0.3460487074382895,
+    "portfolio_return": -0.35417181475050924,
     "proxied": [
      "SSW.JO",
      "NPH.JO",
      "CFR.JO",
      "BHG.JO"
     ],
-    "proxied_weight": 0.07271842243907145,
+    "proxied_weight": 0.07240102583908099,
     "worst": [
      {
       "ticker": "NRP.JO",
-      "return": -0.47222454112739143,
-      "contribution": -0.022951358844665676
+      "return": -0.45059077124494373,
+      "contribution": -0.023546497546664352
      },
      {
       "ticker": "CPI.JO",
-      "return": -0.5260416406365608,
-      "contribution": -0.017194867960413935
+      "return": -0.5260416666666666,
+      "contribution": -0.017127940691711634
      },
      {
       "ticker": "BID.JO",
-      "return": -0.41780021066017536,
-      "contribution": -0.017171082323088033
+      "return": -0.4178002209247277,
+      "contribution": -0.016877898860229813
      },
      {
       "ticker": "NED.JO",
-      "return": -0.5334294215924481,
-      "contribution": -0.016690624266563196
+      "return": -0.533429294684072,
+      "contribution": -0.016375680482886835
      },
      {
       "ticker": "GRT.JO",
-      "return": -0.4154755669997007,
-      "contribution": -0.014211072659996604
+      "return": -0.4154756037456875,
+      "contribution": -0.014463796664345248
      }
     ]
    },
@@ -562,34 +562,34 @@
     "start": "2025-04-01",
     "end": "2025-04-04",
     "index_return": -0.09320885226463993,
-    "portfolio_return": -0.0950823891007273,
+    "portfolio_return": -0.09238853658395378,
     "proxied": [],
     "proxied_weight": 0.0,
     "worst": [
      {
       "ticker": "REM.JO",
-      "return": -0.13805493726516604,
-      "contribution": -0.004777741442826324
+      "return": -0.1380548504921687,
+      "contribution": -0.00487825213554963
      },
      {
       "ticker": "CPI.JO",
-      "return": -0.13780848415574154,
-      "contribution": -0.004504583869093196
+      "return": -0.13780848264971057,
+      "contribution": -0.004487050488977137
      },
      {
       "ticker": "OMU.JO",
-      "return": -0.145120853027897,
-      "contribution": -0.004504042591128045
+      "return": -0.14512093411175986,
+      "contribution": -0.0044531894837634865
      },
      {
-      "ticker": "FSR.JO",
-      "return": -0.14349633106368742,
-      "contribution": -0.004320105515633589
+      "ticker": "DSY.JO",
+      "return": -0.11874057131733906,
+      "contribution": -0.0037970307573984468
      },
      {
-      "ticker": "SLM.JO",
-      "return": -0.14611149216574038,
-      "contribution": -0.004227868218155449
+      "ticker": "SBK.JO",
+      "return": -0.12050836231164097,
+      "contribution": -0.0036916937973946688
      }
     ]
    }
@@ -598,25 +598,25 @@
    {
     "key": "corr",
     "label": "Every correlation at 0.9",
-    "var99_before": 0.019892990939955457,
-    "var99_after": 0.03961893905698743
+    "var99_before": 0.01987284129146087,
+    "var99_after": 0.03911986900963449
    },
    {
     "key": "vol",
     "label": "Volatilities doubled",
-    "var99_before": 0.019892990939955457,
-    "var99_after": 0.03978598187991091
+    "var99_before": 0.01987284129146087,
+    "var99_after": 0.03974568258292174
    },
    {
     "key": "rand",
     "label": "Rand falls 20% against the dollar",
-    "portfolio_return": -0.07480350516520107,
-    "rand_beta": -0.33522593292364433
+    "portfolio_return": -0.07366417348480128,
+    "rand_beta": -0.33012010901033984
    },
    {
     "key": "default",
     "label": "Largest holding (NRP.JO) goes to zero",
-    "portfolio_return": -0.04860263888418733
+    "portfolio_return": -0.05225694587931172
    }
   ]
  },
@@ -627,8 +627,8 @@
     "label": "2008 financial crisis",
     "start": "2008-05-22",
     "end": "2008-11-20",
-    "index_return": -0.4921000490599219,
-    "portfolio_return": -0.11648822090767559,
+    "index_return": -0.49210004905992244,
+    "portfolio_return": -0.11054498879162324,
     "proxied": [
      "PRX.JO",
      "ANH.JO",
@@ -640,32 +640,32 @@
      "RNI.JO",
      "GRT.JO"
     ],
-    "proxied_weight": 0.5894063552674716,
+    "proxied_weight": 0.5831643182513547,
     "worst": [
      {
       "ticker": "BHG.JO",
-      "return": -0.3912759461714863,
-      "contribution": -0.020579641049157233
+      "return": -0.39413520240221966,
+      "contribution": -0.021709296213566546
      },
      {
       "ticker": "PRX.JO",
-      "return": -0.3554373935052159,
-      "contribution": -0.019717070622591197
-     },
-     {
-      "ticker": "NRP.JO",
-      "return": -0.14570674505007933,
-      "contribution": -0.014570674505007934
+      "return": -0.3549590711926448,
+      "contribution": -0.01933250782968528
      },
      {
       "ticker": "EXX.JO",
-      "return": -0.6331908013213564,
-      "contribution": -0.012915656674272875
+      "return": -0.6264997632368156,
+      "contribution": -0.016210457475353327
+     },
+     {
+      "ticker": "NRP.JO",
+      "return": -0.13610620508232754,
+      "contribution": -0.013610620508232755
      },
      {
       "ticker": "GLN.JO",
-      "return": -0.3527505695318054,
-      "contribution": -0.011183500526431796
+      "return": -0.3559679957196743,
+      "contribution": -0.010427438632223642
      }
     ]
    },
@@ -674,8 +674,8 @@
     "label": "Finance minister change, Dec 2015",
     "start": "2015-12-09",
     "end": "2015-12-11",
-    "index_return": -0.022160195270898075,
-    "portfolio_return": -0.01804847992945782,
+    "index_return": -0.022160195270897853,
+    "portfolio_return": -0.01767263668583276,
     "proxied": [
      "PRX.JO",
      "ANH.JO",
@@ -684,32 +684,32 @@
      "BID.JO",
      "RNI.JO"
     ],
-    "proxied_weight": 0.41752692342083664,
+    "proxied_weight": 0.4193430784319089,
     "worst": [
      {
       "ticker": "DSY.JO",
-      "return": -0.16605173240878157,
-      "contribution": -0.009528013766712768
+      "return": -0.16605166051660514,
+      "contribution": -0.009185581360945255
      },
      {
       "ticker": "SHP.JO",
-      "return": -0.08571417578070206,
-      "contribution": -0.007989021763791817
+      "return": -0.08571428571428563,
+      "contribution": -0.00804096106092033
      },
      {
       "ticker": "GRT.JO",
-      "return": -0.1707827645072505,
-      "contribution": -0.006861321439674818
+      "return": -0.17078275429049816,
+      "contribution": -0.005896795208709176
      },
      {
       "ticker": "OUT.JO",
-      "return": -0.13375007426085694,
-      "contribution": -0.004451059309861552
+      "return": -0.13375001819628374,
+      "contribution": -0.004548545765459576
      },
      {
-      "ticker": "VOD.JO",
-      "return": -0.06010958180135606,
-      "contribution": -0.0021994281041457717
+      "ticker": "CLS.JO",
+      "return": -0.09911870307909909,
+      "contribution": -0.0023878898773425743
      }
     ]
    },
@@ -718,38 +718,38 @@
     "label": "Covid crash, 2020",
     "start": "2020-02-17",
     "end": "2020-03-19",
-    "index_return": -0.34604870743828975,
-    "portfolio_return": -0.29530391754352553,
+    "index_return": -0.3460487074382895,
+    "portfolio_return": -0.28970651551964255,
     "proxied": [
      "CFR.JO",
      "BHG.JO"
     ],
-    "proxied_weight": 0.08867950336269792,
+    "proxied_weight": 0.09107689433517682,
     "worst": [
      {
       "ticker": "NRP.JO",
-      "return": -0.47222454112739143,
-      "contribution": -0.04722245411273915
+      "return": -0.45059077124494373,
+      "contribution": -0.045059077124494376
      },
      {
       "ticker": "ANH.JO",
-      "return": -0.43731814927428403,
-      "contribution": -0.043731814927428406
+      "return": -0.43731815769730487,
+      "contribution": -0.04373181576973049
      },
      {
       "ticker": "BID.JO",
-      "return": -0.41780021066017536,
-      "contribution": -0.04178002106601754
+      "return": -0.4178002209247277,
+      "contribution": -0.04178002209247277
      },
      {
       "ticker": "DSY.JO",
-      "return": -0.4413334484483451,
-      "contribution": -0.025323621208448593
+      "return": -0.43362193152845785,
+      "contribution": -0.023986929847934737
      },
      {
       "ticker": "RNI.JO",
-      "return": -0.27236736903813874,
-      "contribution": -0.019984880434009443
+      "return": -0.2723674253448981,
+      "contribution": -0.02010129784103061
      }
     ]
    },
@@ -759,34 +759,34 @@
     "start": "2025-04-01",
     "end": "2025-04-04",
     "index_return": -0.09320885226463993,
-    "portfolio_return": -0.052394012151929015,
+    "portfolio_return": -0.051706437802249594,
     "proxied": [],
     "proxied_weight": 0.0,
     "worst": [
      {
       "ticker": "SHP.JO",
-      "return": -0.0998956029967254,
-      "contribution": -0.009310806983547122
+      "return": -0.09989567970070845,
+      "contribution": -0.00937133482398828
      },
      {
       "ticker": "DSY.JO",
-      "return": -0.11874061064263752,
-      "contribution": -0.006813311469017226
-     },
-     {
-      "ticker": "NRP.JO",
-      "return": -0.04739045613192283,
-      "contribution": -0.004739045613192283
+      "return": -0.11874057131733906,
+      "contribution": -0.006568444876053923
      },
      {
       "ticker": "BHG.JO",
-      "return": -0.08966142019392798,
-      "contribution": -0.004715852997362611
+      "return": -0.08966150264171224,
+      "contribution": -0.004938630469794971
+     },
+     {
+      "ticker": "NRP.JO",
+      "return": -0.047390521895620874,
+      "contribution": -0.004739052189562088
      },
      {
       "ticker": "GLN.JO",
-      "return": -0.1444966959410766,
-      "contribution": -0.0045810808392726995
+      "return": -0.14449676280164814,
+      "contribution": -0.004232771329970115
      }
     ]
    }
@@ -795,20 +795,20 @@
    {
     "key": "corr",
     "label": "Every correlation at 0.9",
-    "var99_before": 0.014382483442103832,
-    "var99_after": 0.03452852327982226
+    "var99_before": 0.014275569043345059,
+    "var99_after": 0.03419387302412789
    },
    {
     "key": "vol",
     "label": "Volatilities doubled",
-    "var99_before": 0.014382483442103832,
-    "var99_after": 0.028764966884207665
+    "var99_before": 0.014275569043345059,
+    "var99_after": 0.028551138086690117
    },
    {
     "key": "rand",
     "label": "Rand falls 20% against the dollar",
-    "portfolio_return": -0.03168560294218851,
-    "rand_beta": -0.14199649846735576
+    "portfolio_return": -0.031150096347753155,
+    "rand_beta": -0.139596668441879
    },
    {
     "key": "default",
@@ -824,8 +824,8 @@
     "label": "2008 financial crisis",
     "start": "2008-05-22",
     "end": "2008-11-20",
-    "index_return": -0.4921000490599219,
-    "portfolio_return": -0.18504679727888612,
+    "index_return": -0.49210004905992244,
+    "portfolio_return": -0.17060882991896753,
     "proxied": [
      "PRX.JO",
      "SSW.JO",
@@ -841,32 +841,32 @@
      "RNI.JO",
      "GRT.JO"
     ],
-    "proxied_weight": 0.36411375145695274,
+    "proxied_weight": 0.3636302900694674,
     "worst": [
      {
       "ticker": "EXX.JO",
-      "return": -0.6331908013213564,
-      "contribution": -0.01749422021123416
+      "return": -0.6264997632368156,
+      "contribution": -0.01747406311865519
      },
      {
       "ticker": "SOL.JO",
-      "return": -0.5635397839657658,
-      "contribution": -0.015112224486920803
-     },
-     {
-      "ticker": "AGL.JO",
-      "return": -0.6863177286379664,
-      "contribution": -0.011049528923539005
+      "return": -0.549023554597415,
+      "contribution": -0.014804183437789787
      },
      {
       "ticker": "SSW.JO",
-      "return": -1.1478891058084553,
-      "contribution": -0.011008058650352622
+      "return": -1.140391056428003,
+      "contribution": -0.010897844533619987
+     },
+     {
+      "ticker": "AGL.JO",
+      "return": -0.683371277758133,
+      "contribution": -0.010872990214177092
      },
      {
       "ticker": "NPH.JO",
-      "return": -1.0879144964668421,
-      "contribution": -0.010637910602209647
+      "return": -1.082235320117321,
+      "contribution": -0.010549550217070625
      }
     ]
    },
@@ -875,8 +875,8 @@
     "label": "Finance minister change, Dec 2015",
     "start": "2015-12-09",
     "end": "2015-12-11",
-    "index_return": -0.022160195270898075,
-    "portfolio_return": -0.033735228535993436,
+    "index_return": -0.022160195270897853,
+    "portfolio_return": -0.033236573792149116,
     "proxied": [
      "PRX.JO",
      "SSW.JO",
@@ -889,32 +889,32 @@
      "OMU.JO",
      "RNI.JO"
     ],
-    "proxied_weight": 0.273817612913443,
+    "proxied_weight": 0.2714119092446706,
     "worst": [
      {
       "ticker": "DSY.JO",
-      "return": -0.16605173240878157,
-      "contribution": -0.004732088129111582
+      "return": -0.16605166051660514,
+      "contribution": -0.004667498506888385
      },
      {
       "ticker": "GRT.JO",
-      "return": -0.1707827645072505,
-      "contribution": -0.004725109066925147
+      "return": -0.17078275429049816,
+      "contribution": -0.004613635591971964
      },
      {
       "ticker": "FSR.JO",
-      "return": -0.21909970683561109,
-      "contribution": -0.004407127045234645
+      "return": -0.21909989023051601,
+      "contribution": -0.004368975024056728
      },
      {
       "ticker": "OUT.JO",
-      "return": -0.13375007426085694,
-      "contribution": -0.003662512652129033
+      "return": -0.13375001819628374,
+      "contribution": -0.003638206334123052
      },
      {
       "ticker": "SLM.JO",
-      "return": -0.18094734156626857,
-      "contribution": -0.0036044519235253775
+      "return": -0.18094740508533613,
+      "contribution": -0.0034906433269458552
      }
     ]
    },
@@ -923,40 +923,40 @@
     "label": "Covid crash, 2020",
     "start": "2020-02-17",
     "end": "2020-03-19",
-    "index_return": -0.34604870743828975,
-    "portfolio_return": -0.34068012072013637,
+    "index_return": -0.3460487074382895,
+    "portfolio_return": -0.3380397453186303,
     "proxied": [
      "SSW.JO",
      "NPH.JO",
      "CFR.JO",
      "BHG.JO"
     ],
-    "proxied_weight": 0.07619243786733285,
+    "proxied_weight": 0.07555803743927757,
     "worst": [
      {
-      "ticker": "ANH.JO",
-      "return": -0.43731814927428403,
-      "contribution": -0.023547897463829758
+      "ticker": "SOL.JO",
+      "return": -0.8689804772234273,
+      "contribution": -0.023431683906725953
      },
      {
-      "ticker": "SOL.JO",
-      "return": -0.8689804669726628,
-      "contribution": -0.023303107012650436
+      "ticker": "ANH.JO",
+      "return": -0.43731815769730487,
+      "contribution": -0.023397721124662766
      },
      {
       "ticker": "NRP.JO",
-      "return": -0.47222454112739143,
-      "contribution": -0.018416072212876767
+      "return": -0.45059077124494373,
+      "contribution": -0.018855627778395192
      },
      {
       "ticker": "BTI.JO",
-      "return": -0.19257213292970876,
-      "contribution": -0.018067671600206857
+      "return": -0.1925720876585928,
+      "contribution": -0.018725988002506147
      },
      {
       "ticker": "BID.JO",
-      "return": -0.41780021066017536,
-      "contribution": -0.016931395185623026
+      "return": -0.4178002209247277,
+      "contribution": -0.016565178167562606
      }
     ]
    },
@@ -966,34 +966,34 @@
     "start": "2025-04-01",
     "end": "2025-04-04",
     "index_return": -0.09320885226463993,
-    "portfolio_return": -0.08096687226847227,
+    "portfolio_return": -0.07873301486110307,
     "proxied": [],
     "proxied_weight": 0.0,
     "worst": [
      {
       "ticker": "SOL.JO",
       "return": -0.24813550752117308,
-      "contribution": -0.0066541521992416995
+      "contribution": -0.006690866976492759
      },
      {
       "ticker": "GLN.JO",
-      "return": -0.1444966959410766,
-      "contribution": -0.0034144892892185893
-     },
-     {
-      "ticker": "DSY.JO",
-      "return": -0.11874061064263752,
-      "contribution": -0.003383831206784628
+      "return": -0.14449676280164814,
+      "contribution": -0.0033750509400208347
      },
      {
       "ticker": "SHP.JO",
-      "return": -0.0998956029967254,
-      "contribution": -0.0033600580197546566
+      "return": -0.09989567970070845,
+      "contribution": -0.0033428040689610044
+     },
+     {
+      "ticker": "DSY.JO",
+      "return": -0.11874057131733906,
+      "contribution": -0.0033376446679696517
      },
      {
       "ticker": "MTN.JO",
-      "return": -0.149854970807192,
-      "contribution": -0.003179002390964551
+      "return": -0.14985497905252987,
+      "contribution": -0.0031799136868343493
      }
     ]
    }
@@ -1002,25 +1002,25 @@
    {
     "key": "corr",
     "label": "Every correlation at 0.9",
-    "var99_before": 0.0176418538914429,
-    "var99_after": 0.04057687054956193
+    "var99_before": 0.01755102459540299,
+    "var99_after": 0.04016696141749977
    },
    {
     "key": "vol",
     "label": "Volatilities doubled",
-    "var99_before": 0.0176418538914429,
-    "var99_after": 0.0352837077828858
+    "var99_before": 0.01755102459540299,
+    "var99_after": 0.03510204919080598
    },
    {
     "key": "rand",
     "label": "Rand falls 20% against the dollar",
-    "portfolio_return": -0.06154832720116928,
-    "rand_beta": -0.27582391173161314
+    "portfolio_return": -0.060021509229715685,
+    "rand_beta": -0.2689815989582376
    },
    {
     "key": "default",
     "label": "Largest holding (BTI.JO) goes to zero",
-    "portfolio_return": -0.09382287730489947
+    "portfolio_return": -0.09724144464645923
    }
   ]
  },
@@ -1031,39 +1031,39 @@
     "label": "2008 financial crisis",
     "start": "2008-05-22",
     "end": "2008-11-20",
-    "index_return": -0.4921000490599219,
-    "portfolio_return": -0.12573465503739104,
+    "index_return": -0.49210004905992244,
+    "portfolio_return": -0.105211024171911,
     "proxied": [
      "ANH.JO",
      "GLN.JO",
      "BHG.JO"
     ],
-    "proxied_weight": 0.2936342227676336,
+    "proxied_weight": 0.27565825664386323,
     "worst": [
      {
       "ticker": "SOL.JO",
-      "return": -0.5635397839657658,
-      "contribution": -0.05635397839624719
+      "return": -0.549023554597415,
+      "contribution": -0.05490235545936983
      },
      {
       "ticker": "BHG.JO",
-      "return": -0.3912759461714863,
-      "contribution": -0.039127594616920607
+      "return": -0.39413520240221966,
+      "contribution": -0.039413520239955147
      },
      {
       "ticker": "GLN.JO",
-      "return": -0.3527505695318054,
-      "contribution": -0.03302952540936204
-     },
-     {
-      "ticker": "NED.JO",
-      "return": -0.17384446532223818,
-      "contribution": -0.012367496220973712
+      "return": -0.3559679957196743,
+      "contribution": -0.02693191797764269
      },
      {
       "ticker": "ANG.JO",
-      "return": -0.4526889805497516,
-      "contribution": -0.00984910296568758
+      "return": -0.451180631356661,
+      "contribution": -0.015085078335333409
+     },
+     {
+      "ticker": "NED.JO",
+      "return": -0.14921375352862243,
+      "contribution": -0.014921375352761229
      }
     ]
    },
@@ -1072,38 +1072,38 @@
     "label": "Finance minister change, Dec 2015",
     "start": "2015-12-09",
     "end": "2015-12-11",
-    "index_return": -0.022160195270898075,
-    "portfolio_return": -0.03450337917812101,
+    "index_return": -0.022160195270897853,
+    "portfolio_return": -0.03886503679412866,
     "proxied": [
      "ANH.JO",
      "BHG.JO"
     ],
-    "proxied_weight": 0.19999999999883392,
+    "proxied_weight": 0.19999999999864604,
     "worst": [
      {
       "ticker": "DSY.JO",
-      "return": -0.16605173240878157,
-      "contribution": -0.016605173240781233
+      "return": -0.16605166051660514,
+      "contribution": -0.0166051660515481
      },
      {
       "ticker": "NED.JO",
-      "return": -0.1571914155505898,
-      "contribution": -0.011182779009892028
+      "return": -0.15719130261320557,
+      "contribution": -0.015719130261214142
      },
      {
       "ticker": "OUT.JO",
-      "return": -0.13375007426085694,
-      "contribution": -0.00857818559141429
+      "return": -0.13375001819628374,
+      "contribution": -0.008899374134526152
      },
      {
       "ticker": "SHP.JO",
-      "return": -0.08571417578070206,
-      "contribution": -0.008571417578020258
+      "return": -0.08571428571428563,
+      "contribution": -0.008571428571370537
      },
      {
       "ticker": "APN.JO",
-      "return": -0.0805457479606162,
-      "contribution": -0.008054574796010261
+      "return": -0.08054580380207987,
+      "contribution": -0.00805458038015346
      }
     ]
    },
@@ -1112,37 +1112,37 @@
     "label": "Covid crash, 2020",
     "start": "2020-02-17",
     "end": "2020-03-19",
-    "index_return": -0.34604870743828975,
-    "portfolio_return": -0.35944293968992136,
+    "index_return": -0.3460487074382895,
+    "portfolio_return": -0.3539232562977943,
     "proxied": [
      "BHG.JO"
     ],
-    "proxied_weight": 0.09999999999941724,
+    "proxied_weight": 0.09999999999932302,
     "worst": [
      {
       "ticker": "SOL.JO",
-      "return": -0.8689804669726628,
-      "contribution": -0.08689804669675837
-     },
-     {
-      "ticker": "DSY.JO",
-      "return": -0.4413334484483451,
-      "contribution": -0.044133344844576906
-     },
-     {
-      "ticker": "ANH.JO",
-      "return": -0.43731814927428403,
-      "contribution": -0.043731814927173304
-     },
-     {
-      "ticker": "GLN.JO",
-      "return": -0.4576417927444698,
-      "contribution": -0.04285093357014856
+      "return": -0.8689804772234273,
+      "contribution": -0.08689804772175445
      },
      {
       "ticker": "NED.JO",
-      "return": -0.5334294215924481,
-      "contribution": -0.037948785677313614
+      "return": -0.533429294684072,
+      "contribution": -0.05334292946804608
+     },
+     {
+      "ticker": "ANH.JO",
+      "return": -0.43731815769730487,
+      "contribution": -0.04373181576943443
+     },
+     {
+      "ticker": "DSY.JO",
+      "return": -0.43362193152845785,
+      "contribution": -0.04336219315255223
+     },
+     {
+      "ticker": "GLN.JO",
+      "return": -0.45764192139738,
+      "contribution": -0.034624389940693286
      }
     ]
    },
@@ -1152,34 +1152,34 @@
     "start": "2025-04-01",
     "end": "2025-04-04",
     "index_return": -0.09320885226463993,
-    "portfolio_return": -0.09388022839494974,
+    "portfolio_return": -0.09085229773339654,
     "proxied": [],
     "proxied_weight": 0.0,
     "worst": [
      {
       "ticker": "SOL.JO",
       "return": -0.24813550752117308,
-      "contribution": -0.024813550751972273
-     },
-     {
-      "ticker": "GLN.JO",
-      "return": -0.1444966959410766,
-      "contribution": -0.013529835817102286
+      "contribution": -0.024813550751949326
      },
      {
       "ticker": "DSY.JO",
-      "return": -0.11874061064263752,
-      "contribution": -0.011874061064194445
+      "return": -0.11874057131733906,
+      "contribution": -0.011874057131653522
+     },
+     {
+      "ticker": "NED.JO",
+      "return": -0.11244545700274156,
+      "contribution": -0.011244545700198031
+     },
+     {
+      "ticker": "GLN.JO",
+      "return": -0.14449676280164814,
+      "contribution": -0.010932373164450166
      },
      {
       "ticker": "SHP.JO",
-      "return": -0.0998956029967254,
-      "contribution": -0.009989560299614328
-     },
-     {
-      "ticker": "BHG.JO",
-      "return": -0.08966142019392798,
-      "contribution": -0.008966142019340546
+      "return": -0.09989567970070845,
+      "contribution": -0.009989567970003218
      }
     ]
    }
@@ -1188,25 +1188,25 @@
    {
     "key": "corr",
     "label": "Every correlation at 0.9",
-    "var99_before": 0.019794080840894353,
-    "var99_after": 0.04382467057744456
+    "var99_before": 0.019618076793566582,
+    "var99_after": 0.043342434334092954
    },
    {
     "key": "vol",
     "label": "Volatilities doubled",
-    "var99_before": 0.019794080840894353,
-    "var99_after": 0.039588161681788706
+    "var99_before": 0.019618076793566582,
+    "var99_after": 0.039236153587133164
    },
    {
     "key": "rand",
     "label": "Rand falls 20% against the dollar",
-    "portfolio_return": -0.06411848535138655,
-    "rand_beta": -0.2873418701717305
+    "portfolio_return": -0.05836295783588669,
+    "rand_beta": -0.26154893337565227
    },
    {
     "key": "default",
-    "label": "Largest holding (SHP.JO) goes to zero",
-    "portfolio_return": -0.09999999999941728
+    "label": "Largest holding (SOL.JO) goes to zero",
+    "portfolio_return": -0.09999999999932302
    }
   ]
  }

@@ -14,19 +14,19 @@ Live dashboard: https://mdingi-jse-risk.azurewebsites.net (embedded at mdingi.co
 
 ## Results
 
-Validation January 2017 to September 2026, after costs. Full detail in `research/RESULTS.md`.
+Validation January 2017 to September 2026, after costs, on total returns (Yahoo's adjusted closes carry almost none of the dividends; corrected 12 November 2026). Full detail in `research/RESULTS.md`.
 
 | Rule | CAGR | Volatility | Sharpe | Max drawdown |
 | --- | --- | --- | --- | --- |
-| R0 Original method | 3.1% | 18.6% | −0.09 | −48.1% |
-| R1 Equal weight | 6.7% | 18.5% | 0.09 | −45.7% |
-| R3 Minimum variance | −0.6% | 14.8% | −0.41 | −45.8% |
-| R5 Maximum Sharpe | 8.4% | 20.0% | 0.18 | −37.0% |
-| Satrix 40 ETF | 9.3% | 18.8% | 0.22 | −37.3% |
+| R0 Original method | 7.7% | 18.2% | 0.14 | −43.0% |
+| R1 Equal weight | 11.5% | 18.5% | 0.33 | −40.6% |
+| R3 Minimum variance | 4.0% | 14.8% | −0.10 | −39.2% |
+| R5 Maximum Sharpe | 11.3% | 19.5% | 0.31 | −36.6% |
+| Satrix 40 ETF | 12.7% | 18.6% | 0.39 | −34.2% |
 
 - Minimum variance did cut volatility (P1 passed), but its Sharpe ratio was significantly below equal weight's.
-- Maximum Sharpe beat equal weight by an amount indistinguishable from noise (P2, t = 0.42).
-- The original method lost to equal weight (P3 failed, t = −2.36). No rule beat the Satrix 40.
+- No covariance rule beat equal weight (P2 failed): maximum Sharpe came closest (t = −0.07).
+- The original method lost to equal weight (P3 failed, t = −2.58). No rule beat the Satrix 40.
 - Only filtered historical simulation passed the VaR and ES backtests for all three portfolios tested; the normal, EWMA and plain historical models all failed.
 
 The universe is today's list of tickers, so shares that delisted before 2026 are missing; this flatters every rule roughly equally. Research output, not investment advice.
