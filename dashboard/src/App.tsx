@@ -349,7 +349,7 @@ function CostTable({ research, rule }: { research: Research; rule: RuleId }) {
               <th className="num">Turnover a month</th>
               {tiers.map((k) => (
                 <th key={k} className="num">
-                  {head[k]} ({num(C.tiers[k].round_trip_bps / 100, 2)}% a round trip)
+                  {head[k]} ({(Math.round(C.tiers[k].round_trip_bps) / 100).toFixed(2)}% a round trip)
                 </th>
               ))}
             </tr>
