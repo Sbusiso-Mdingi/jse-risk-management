@@ -18,6 +18,7 @@ P = json.load(open("research/results/portfolio.json"))
 V = json.load(open("research/results/var.json"))
 VS = pickle.load(open("research/results/var_series.pkl", "rb"))
 S = json.load(open("research/results/stress.json"))
+C = json.load(open("research/results/costs.json"))
 names = json.load(open("data/raw/names.json"))
 r4 = lambda x: round(float(x), 6)
 
@@ -43,7 +44,7 @@ best = max(("R3", "R4", "R5"), key=lambda k: P["rules"][k]["validation"]["sharpe
 tests = [
     {"id": "P1", "claim": "Minimum variance has lower volatility than equal weight and the Satrix 40",
      "verdict": "Passed" if T["P1"]["passed"] else "Failed", "detail": T["P1"]["vol"]},
-    {"id": "P2", "claim": "An optimised rule (R3, R4 or R5) has a higher Sharpe ratio than equal weight",
+    {"id": "P2", "claim": "Minimum variance, equal risk or maximum Sharpe has a higher Sharpe ratio than equal weight",
      "verdict": verdict(T["P2"]["passed"], T["P2"]["vs_R1"][best]["t_stat"]), "best": best, "detail": T["P2"]["vs_R1"]},
     {"id": "P3", "claim": "The original app's method has a higher Sharpe ratio than equal weight",
      "verdict": verdict(T["P3"]["passed"], T["P3"]["vs_R1"]["t_stat"]), "detail": T["P3"]["vs_R1"]},
@@ -73,6 +74,7 @@ out = {
     "latest_rebalance": str(latest.date()),
     "periods": PERIODS,
     "costs": {"buy": BUY_COST, "sell": SELL_COST},
+    "cost_schedules": C,
     "rules": {k: {"label": weights.RULES[k][0], "window": P["chosen_window"][k],
                   "design_grid": P["design_grid"][k], **P["rules"][k]} for k in P["chosen_window"]}
     | {"STX40": {"label": "Satrix 40 ETF", **P["rules"]["STX40"]}},

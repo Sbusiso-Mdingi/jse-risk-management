@@ -28,6 +28,8 @@ export type HypoScenario = { key: string; label: string; var99_before?: number; 
 export type Stress = { historical: HistScenario[]; hypothetical: HypoScenario[] };
 export type Test = { id: string; claim: string; verdict: string; best?: string; detail: Record<string, unknown> };
 
+export type CostTier = "protocol" | "institutional" | "retail" | "retail_wide";
+
 export type Research = {
   generated: string;
   freeze: string;
@@ -35,6 +37,10 @@ export type Research = {
   latest_rebalance: string;
   periods: Record<Period, [string, string]>;
   costs: { buy: number; sell: number };
+  cost_schedules: {
+    tiers: Record<CostTier, { label: string; per_side_bps: number; round_trip_bps: number }>;
+    rules: Record<RuleId, { turnover_per_month: number } & Record<CostTier, { cagr: number; sharpe: number }>>;
+  };
   rules: Record<RuleId | "STX40", Rule>;
   tests: Test[];
   vs_stx40: Record<RuleId, { diff_annual: number; t_stat: number }>;

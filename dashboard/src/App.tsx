@@ -80,7 +80,7 @@ export function App({ embedded }: { embedded: boolean }) {
     <div className="preview">
       <header className="head">
         <div>
-          <p className="eyebrow">Live preview · JSE portfolio risk</p>
+          <p className="eyebrow">JSE portfolio risk</p>
           <h1 className="serif">
             Six ways to weight JSE shares, <em>tested out of sample</em>
           </h1>
@@ -95,7 +95,7 @@ export function App({ embedded }: { embedded: boolean }) {
             <i className={`dot${live ? "" : " stale"}`} />
             {live ? `Live prices to ${fmtDate(live.date[live.date.length - 1] ?? research.data_end)}` : "Loading live prices"}
           </span>
-          <span>Frozen {fmtDate(research.freeze)}</span>
+          <span>Rules fixed {fmtDate(research.freeze)}</span>
           <span>Last rebalance {fmtDate(research.latest_rebalance)}</span>
         </div>
       </header>
@@ -182,8 +182,8 @@ function Backtest({ research, live }: { research: Research; live: Live | null })
   const b = stats("STX40");
   const turnover = research.rules[rule].turnover_per_month;
   const periodLabel: Record<PeriodKey, string> = {
-    design: "Design 2008 to 2016",
-    validation: "Validation 2017 to Sep 2026",
+    design: "Tuning, 2008 to 2016",
+    validation: "Test, 2017 to Sep 2026",
     live: "Live since 1 Oct 2026",
     all: "Whole record",
   };
@@ -207,17 +207,17 @@ function Backtest({ research, live }: { research: Research; live: Live | null })
 
       {period === "live" ? (
         <div className="metrics">
-          <Metric value={s ? pct(s.cagr, 2) : "…"} label="Return since freeze" sub="not annualised" neg={(s?.cagr ?? 0) < 0} />
+          <Metric value={s ? pct(s.cagr, 2) : "…"} label={`Return since ${fmtDate(research.freeze, { day: "numeric", month: "short" })}`} sub="not annualised" neg={(s?.cagr ?? 0) < 0} />
           <Metric value={b ? pct(b.cagr, 2) : "…"} label="Satrix 40" sub="same days" neg={(b?.cagr ?? 0) < 0} />
           <Metric value={s ? String(s.sessions) : "…"} label="Sessions" sub="too few to judge" />
           <Metric value={s ? pct(s.mdd, 1) : "…"} label="Max drawdown" neg />
         </div>
       ) : period === "all" ? (
         <div className="metrics">
-          <Metric value={pct(research.rules[rule].validation?.cagr)} label="Validation CAGR" />
-          <Metric value={pct(research.rules[rule].design?.cagr)} label="Design CAGR" />
-          <Metric value={num(research.rules[rule].validation?.sharpe)} label="Validation Sharpe" />
-          <Metric value={num(research.rules.STX40.validation?.sharpe)} label="Satrix 40 Sharpe" sub="validation" />
+          <Metric value={pct(research.rules[rule].validation?.cagr)} label="CAGR, 2017 to 2026" />
+          <Metric value={pct(research.rules[rule].design?.cagr)} label="CAGR, 2008 to 2016" />
+          <Metric value={num(research.rules[rule].validation?.sharpe)} label="Sharpe, 2017 to 2026" />
+          <Metric value={num(research.rules.STX40.validation?.sharpe)} label="Satrix 40 Sharpe" sub="2017 to 2026" />
         </div>
       ) : (
         s && (
@@ -234,7 +234,7 @@ function Backtest({ research, live }: { research: Research; live: Live | null })
       <section className="panel">
         <div className="panel-head">
           <h2 className="serif">
-            Growth of one rand <em>{period === "live" ? "since the freeze" : "out of sample"}</em>
+            Growth of one rand <em>{period === "live" ? `since ${fmtDate(research.freeze)}` : "out of sample"}</em>
           </h2>
           <div className="legend">
             <span style={{ color: "var(--primary)" }}>
@@ -259,7 +259,7 @@ function Backtest({ research, live }: { research: Research; live: Live | null })
         {period === "live" && (
           <p className="note">
             Weights set at the {fmtDate(research.freeze)} close, priced daily from live data, with each rule rebalanced at later month ends by
-            the same frozen code. A few weeks says nothing about skill; this panel is here so the record cannot be edited after the fact.
+            the same unchanged code. A few weeks says nothing about skill; this panel is here so the record cannot be edited after the fact.
           </p>
         )}
         {period === "all" && <p className="note">From January 2009, when the Satrix 40 series starts.</p>}
@@ -268,9 +268,9 @@ function Backtest({ research, live }: { research: Research; live: Live | null })
       <section className="panel">
         <div className="panel-head">
           <h2 className="serif">
-            The three <em>pre-registered</em> tests
+            Three questions, <em>set before the test</em>
           </h2>
-          <span className="eyebrow">Validation, 2017 to Sep 2026</span>
+          <span className="eyebrow">2017 to Sep 2026</span>
         </div>
         <Tests research={research} />
       </section>
@@ -278,7 +278,7 @@ function Backtest({ research, live }: { research: Research; live: Live | null })
       {period !== "live" && period !== "all" && (
         <section className="panel">
           <div className="panel-head">
-            <h2 className="serif">Every rule, {period === "design" ? "design 2008 to 2016" : "validation 2017 to Sep 2026"}</h2>
+            <h2 className="serif">Every rule, {period === "design" ? "2008 to 2016" : "2017 to Sep 2026"}</h2>
           </div>
           <div className="table-wrap">
             <table>
@@ -313,12 +313,70 @@ function Backtest({ research, live }: { research: Research; live: Live | null })
             </table>
           </div>
           <p className="note">
-            Costs: {pct(research.costs.sell, 2)} a side for brokerage and spread, plus 0.25% securities transfer tax on purchases. The estimation
-            window (one or two years) was chosen per rule on the design period only. Sharpe ratios use the 91-day T-bill.
+            Costs: {pct(research.costs.sell, 2)} a side, plus 0.25% securities transfer tax on purchases. The estimation window (one or two
+            years) was chosen per rule on 2008 to 2016 only. Sharpe ratios use the 91-day T-bill.
           </p>
         </section>
       )}
+
+      {period === "validation" && <CostTable research={research} rule={rule} />}
     </>
+  );
+}
+
+function CostTable({ research, rule }: { research: Research; rule: RuleId }) {
+  const C = research.cost_schedules;
+  const tiers = ["protocol", "institutional", "retail"] as const;
+  const head: Record<(typeof tiers)[number], string> = {
+    protocol: "As tested",
+    institutional: "JSE, institutional",
+    retail: "JSE, retail",
+  };
+  const r0 = C.rules.R0;
+  return (
+    <section className="panel">
+      <div className="panel-head">
+        <h2 className="serif">
+          The same rules at <em>JSE costs</em>
+        </h2>
+        <span className="eyebrow">2017 to Sep 2026</span>
+      </div>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Rule</th>
+              <th className="num">Turnover a month</th>
+              {tiers.map((k) => (
+                <th key={k} className="num">
+                  {head[k]} ({num(C.tiers[k].round_trip_bps / 100, 2)}% a round trip)
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {RULES.map((r) => (
+              <tr key={r.id} className={r.id === rule ? "final" : undefined}>
+                <td>{r.label}</td>
+                <td className="num">{pct(C.rules[r.id].turnover_per_month, 0)}</td>
+                {tiers.map((k) => (
+                  <td key={k} className="num">
+                    {pct(C.rules[r.id][k].cagr)}, {num(C.rules[r.id][k].sharpe)}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="note">
+        CAGR and Sharpe ratio. Each execution pays brokerage plus 15% VAT, half the bid-ask spread (taken as 0.05% for these shares), and
+        Strate and the investor protection levy; every purchase also pays 0.25% securities transfer tax. Institutional brokerage is taken as
+        0.10% and retail as 0.25%. The answers above do not change at either rate, but the gaps widen: the rules that lose to equal weight are
+        the ones that trade most. At retail rates the original method gives up {pct(r0.protocol.cagr - r0.retail.cagr, 1)} a year more than as
+        tested; equal weight gives up {pct(C.rules.R1.protocol.cagr - C.rules.R1.retail.cagr, 1)}.
+      </p>
+    </section>
   );
 }
 
@@ -332,7 +390,7 @@ function Tests({ research }: { research: Research }) {
     P1: `Minimum variance ran at ${pct(v("R3").vol)} volatility, against ${pct(v("R1").vol)} for equal weight and ${pct(v("STX40").vol)} for the Satrix 40. Lower risk did not mean better returns: it made ${pct(v("R3").cagr)} a year with a Sharpe ratio of ${num(v("R3").sharpe)}, significantly worse than equal weight (t = ${num(p2.R3.t_stat, 1)}).`,
     P2: `${(v(best).sharpe ?? 0) > (v("R1").sharpe ?? 0)
       ? `${ruleLabel(best)} had the best Sharpe ratio, ${num(v(best).sharpe)} against ${num(v("R1").sharpe)} for equal weight, but the gap is well within noise`
-      : `None of the three beat equal weight. The closest, ${ruleLabel(best).toLowerCase()}, had a Sharpe ratio of ${num(v(best).sharpe)} against ${num(v("R1").sharpe)} for equal weight`} (t = ${num(p2[best].t_stat, 1)}). Equal risk contribution trailed equal weight (t = ${num(p2.R4.t_stat, 1)}). No rule beat simply holding the Satrix 40 (Sharpe ${num(v("STX40").sharpe)}).`,
+      : `None of the three beat equal weight. The closest, ${ruleLabel(best).replace(/^./, (c) => c.toLowerCase())}, had a Sharpe ratio of ${num(v(best).sharpe)} against ${num(v("R1").sharpe)} for equal weight`} (t = ${num(p2[best].t_stat, 1)}). Equal risk contribution trailed equal weight (t = ${num(p2.R4.t_stat, 1)}). No rule beat simply holding the Satrix 40 (Sharpe ${num(v("STX40").sharpe)}).`,
     P3: `The original app's method made ${pct(v("R0").cagr)} a year with a Sharpe ratio of ${num(v("R0").sharpe)}, below equal weight (t = ${num(p3.t_stat, 1)}). Picking the best of 5,000 random portfolios mostly picks the luckiest past means, and those do not repeat.`,
   };
   return (
@@ -340,7 +398,7 @@ function Tests({ research }: { research: Research }) {
       {research.tests.map((t) => (
         <li key={t.id}>
           <div className="test-head">
-            <span className="mono">{t.id}</span>
+            <span className="mono">{t.id.slice(1)}</span>
             <strong>{t.claim}</strong>
             <Verdict text={t.verdict} />
           </div>
@@ -394,7 +452,7 @@ function RiskModels({ research }: { research: Research }) {
       </section>
       <section className="panel">
         <div className="panel-head">
-          <h2 className="serif">Backtests, validation 2017 to Sep 2026</h2>
+          <h2 className="serif">Backtests, 2017 to Sep 2026</h2>
         </div>
         <div className="table-wrap">
           <table>
@@ -526,7 +584,8 @@ function StressTab({ research }: { research: Research }) {
         <StressTable stress={research.stress[rule]} />
         <p className="note">
           Each holding takes its own price move over the window. A share without prices then (listed later, or relisted, such as Richemont in
-          2023) takes its beta to the Top 40 times the index move; the proxied weight column shows how much of the portfolio that covers. The
+          2023) takes the index move scaled by its beta to the Top 40, on log returns so that no share loses more than everything; the
+          proxied weight column shows how much of the portfolio that covers. The
           rand scenario uses each share's beta to USD/ZAR on two years of weekly returns. Illustrations, not tests, and flattered by survivorship:
           shares that collapsed in these episodes and later delisted are not in the universe.
         </p>
@@ -625,7 +684,7 @@ function Build({ research }: { research: Research }) {
           <Segmented options={[{ id: 252, label: "1 year" }, { id: 504, label: "2 years" }]} value={window} onChange={setWindow} />
         </div>
         <div className="control">
-          <span className="label">Max weight (R3, R5)</span>
+          <span className="label">Max weight (min variance, max Sharpe)</span>
           <Segmented
             options={[0.1, 0.2, 0.35, 1].map((c) => ({ id: c, label: c === 1 ? "None" : pct(c, 0) }))}
             value={cap}
@@ -753,11 +812,13 @@ function Method({ research }: { research: Research }) {
         </li>
         <li>
           <strong>Costs</strong>
-          0.10% a side for brokerage and spread, plus 0.25% securities transfer tax on purchases, charged on every rebalance.
+          As tested: 0.10% a side, plus 0.25% securities transfer tax on purchases, charged on every rebalance. Also shown at JSE institutional
+          and retail rates (brokerage plus VAT, half-spread, Strate and the levy, transfer tax) on the Backtest tab.
         </li>
         <li>
-          <strong>Protocol</strong>
-          Design 2008 to 2016 for choices and debugging; validation 2017 to September 2026, run once; live from 1 October 2026 on frozen rules.
+          <strong>Periods</strong>
+          2008 to 2016 to choose each rule's estimation window and to debug; 2017 to September 2026 as the test, run once; from 1 October 2026
+          live, on rules fixed on 30 September.
           The Sharpe ratio test is Ledoit and Wolf (2008) with a HAC variance.
         </li>
         <li>
@@ -773,8 +834,9 @@ function Method({ research }: { research: Research }) {
         </li>
         <li>
           <strong>Limits</strong>
-          Survivorship bias (only firms listed in 2024), Yahoo histories that start at relistings, no market impact, no dividend tax. The live
-          record is too short to say anything yet.
+          Survivorship bias (only firms listed in 2024), which flatters every rule but not the Satrix 40, so the finding that no rule beat it
+          would only be firmer without it. Yahoo histories that start at relistings, no market impact, no dividend tax. The live record is too
+          short to say anything yet.
         </li>
         <li>
           <strong>Data</strong>

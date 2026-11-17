@@ -37,7 +37,10 @@ def beta(y: pd.Series, x: pd.Series) -> float:
 
 
 def historical(w: pd.Series, prices: pd.DataFrame, index: pd.Series) -> list[dict]:
-    """Each holding takes its own return from peak to trough; without prices, beta × index return."""
+    """Each holding takes its own return from peak to trough; without prices, beta × the index's log return.
+
+    The proxy is applied to log returns so that a high-beta share cannot lose more than everything
+    (a beta of 2.2 times a 49% simple fall would otherwise be a 108% loss)."""
     rets = prices[w.index].pct_change(fill_method=None)
     ir = index.pct_change(fill_method=None)
     out = []
@@ -51,7 +54,7 @@ def historical(w: pd.Series, prices: pd.DataFrame, index: pd.Series) -> list[dic
                 hold[t] = float(x1 / x0 - 1)
             else:
                 b_ = beta(rets[t].iloc[-BETA_WINDOW:], ir.iloc[-BETA_WINDOW:])
-                hold[t] = b_ * idx_ret
+                hold[t] = float(np.expm1(b_ * np.log1p(idx_ret)))
                 proxied.append(t)
         pr = float(sum(w[t] * hold[t] for t in w.index))
         out.append({"key": key, "label": label, "start": str(p0.date()), "end": str(p1.date()),

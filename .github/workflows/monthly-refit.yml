@@ -38,6 +38,7 @@ jobs:
           python research/evaluate.py
           python research/var_backtest.py
           python research/stress_test.py
+          python research/costs.py
           python research/export.py
 
       - name: Parity tests

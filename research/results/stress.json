@@ -7,7 +7,7 @@
     "start": "2008-05-22",
     "end": "2008-11-20",
     "index_return": -0.49210004905992244,
-    "portfolio_return": -0.21287628289046137,
+    "portfolio_return": -0.20503702694828457,
     "proxied": [
      "PRX.JO",
      "SSW.JO",
@@ -31,24 +31,24 @@
       "contribution": -0.03279827937921349
      },
      {
-      "ticker": "NPH.JO",
-      "return": -1.082235320117321,
-      "contribution": -0.02985411356465717
-     },
-     {
       "ticker": "BHG.JO",
-      "return": -0.39413520240221966,
-      "contribution": -0.020810803425871053
+      "return": -0.4187668188995017,
+      "contribution": -0.022111381820955033
      },
      {
-      "ticker": "SSW.JO",
-      "return": -1.140391056428003,
-      "contribution": -0.019529304639794822
+      "ticker": "NPH.JO",
+      "return": -0.7746061630148035,
+      "contribution": -0.021367977859030118
      },
      {
       "ticker": "GFI.JO",
       "return": -0.45062417424885937,
       "contribution": -0.01904305990843004
+     },
+     {
+      "ticker": "EXX.JO",
+      "return": -0.6264997632368156,
+      "contribution": -0.01709146249664187
      }
     ]
    },
@@ -58,7 +58,7 @@
     "start": "2015-12-09",
     "end": "2015-12-11",
     "index_return": -0.022160195270897853,
-    "portfolio_return": -0.04344402356905098,
+    "portfolio_return": -0.04342049201286069,
     "proxied": [
      "PRX.JO",
      "SSW.JO",
@@ -106,7 +106,7 @@
     "start": "2020-02-17",
     "end": "2020-03-19",
     "index_return": -0.3460487074382895,
-    "portfolio_return": -0.34476670596948417,
+    "portfolio_return": -0.3381367480540589,
     "proxied": [
      "SSW.JO",
      "NPH.JO",
@@ -136,9 +136,9 @@
       "contribution": -0.024267938185977084
      },
      {
-      "ticker": "NPH.JO",
-      "return": -0.7610365704821526,
-      "contribution": -0.020993652470673762
+      "ticker": "ANH.JO",
+      "return": -0.43731815769730487,
+      "contribution": -0.01955022340077102
      }
     ]
    },
@@ -214,7 +214,7 @@
     "start": "2008-05-22",
     "end": "2008-11-20",
     "index_return": -0.49210004905992244,
-    "portfolio_return": -0.27126318412989725,
+    "portfolio_return": -0.2631564898549398,
     "proxied": [
      "PRX.JO",
      "SSW.JO",
@@ -234,13 +234,13 @@
     "worst": [
      {
       "ticker": "SSW.JO",
-      "return": -1.140391056428003,
-      "contribution": -0.02850977641070008
+      "return": -0.7919482907070268,
+      "contribution": -0.019798707267675672
      },
      {
       "ticker": "NPH.JO",
-      "return": -1.082235320117321,
-      "contribution": -0.027055883002933025
+      "return": -0.7746061630148035,
+      "contribution": -0.019365154075370088
      },
      {
       "ticker": "IMP.JO",
@@ -265,7 +265,7 @@
     "start": "2015-12-09",
     "end": "2015-12-11",
     "index_return": -0.022160195270897853,
-    "portfolio_return": -0.031195863525298535,
+    "portfolio_return": -0.03116947194334811,
     "proxied": [
      "PRX.JO",
      "SSW.JO",
@@ -313,7 +313,7 @@
     "start": "2020-02-17",
     "end": "2020-03-19",
     "index_return": -0.3460487074382895,
-    "portfolio_return": -0.37037184047545096,
+    "portfolio_return": -0.36284526116481547,
     "proxied": [
      "SSW.JO",
      "NPH.JO",
@@ -328,16 +328,6 @@
       "contribution": -0.021724511930585683
      },
      {
-      "ticker": "SSW.JO",
-      "return": -0.8019321514089958,
-      "contribution": -0.020048303785224895
-     },
-     {
-      "ticker": "NPH.JO",
-      "return": -0.7610365704821526,
-      "contribution": -0.019025914262053814
-     },
-     {
       "ticker": "VAL.JO",
       "return": -0.6546180898525209,
       "contribution": -0.016365452246313025
@@ -346,6 +336,16 @@
       "ticker": "IMP.JO",
       "return": -0.6490473715793732,
       "contribution": -0.01622618428948433
+     },
+     {
+      "ticker": "SSW.JO",
+      "return": -0.6262807105180435,
+      "contribution": -0.015657017762951086
+     },
+     {
+      "ticker": "NPH.JO",
+      "return": -0.607043826481858,
+      "contribution": -0.01517609566204645
      }
     ]
    },
@@ -421,7 +421,7 @@
     "start": "2008-05-22",
     "end": "2008-11-20",
     "index_return": -0.49210004905992244,
-    "portfolio_return": -0.19796527770531308,
+    "portfolio_return": -0.20048603200767315,
     "proxied": [
      "PRX.JO",
      "SSW.JO",
@@ -445,24 +445,24 @@
       "contribution": -0.01671078645881764
      },
      {
-      "ticker": "SSW.JO",
-      "return": -1.140391056428003,
-      "contribution": -0.0133092296050063
-     },
-     {
-      "ticker": "NPH.JO",
-      "return": -1.082235320117321,
-      "contribution": -0.013049502863510755
-     },
-     {
       "ticker": "AGL.JO",
       "return": -0.683371277758133,
       "contribution": -0.01289176048060355
      },
      {
       "ticker": "OMU.JO",
-      "return": -0.3301700299088315,
-      "contribution": -0.010131616875561014
+      "return": -0.3652619211205153,
+      "contribution": -0.011208448704585048
+     },
+     {
+      "ticker": "PPH.JO",
+      "return": -0.40261920965056225,
+      "contribution": -0.010282347112626627
+     },
+     {
+      "ticker": "BHG.JO",
+      "return": -0.4187668188995017,
+      "contribution": -0.010168610615644098
      }
     ]
    },
@@ -472,7 +472,7 @@
     "start": "2015-12-09",
     "end": "2015-12-11",
     "index_return": -0.022160195270897853,
-    "portfolio_return": -0.05422745241793989,
+    "portfolio_return": -0.05422047163042382,
     "proxied": [
      "PRX.JO",
      "SSW.JO",
@@ -520,7 +520,7 @@
     "start": "2020-02-17",
     "end": "2020-03-19",
     "index_return": -0.3460487074382895,
-    "portfolio_return": -0.35417181475050924,
+    "portfolio_return": -0.35096088397088515,
     "proxied": [
      "SSW.JO",
      "NPH.JO",
@@ -628,7 +628,7 @@
     "start": "2008-05-22",
     "end": "2008-11-20",
     "index_return": -0.49210004905992244,
-    "portfolio_return": -0.11054498879162324,
+    "portfolio_return": -0.12649850204502242,
     "proxied": [
      "PRX.JO",
      "ANH.JO",
@@ -644,13 +644,18 @@
     "worst": [
      {
       "ticker": "BHG.JO",
-      "return": -0.39413520240221966,
-      "contribution": -0.021709296213566546
+      "return": -0.4187668188995017,
+      "contribution": -0.02306602622778325
      },
      {
       "ticker": "PRX.JO",
-      "return": -0.3549590711926448,
-      "contribution": -0.01933250782968528
+      "return": -0.38655811376651117,
+      "contribution": -0.02105351959568206
+     },
+     {
+      "ticker": "NRP.JO",
+      "return": -0.17086848112686662,
+      "contribution": -0.017086848112686664
      },
      {
       "ticker": "EXX.JO",
@@ -658,14 +663,9 @@
       "contribution": -0.016210457475353327
      },
      {
-      "ticker": "NRP.JO",
-      "return": -0.13610620508232754,
-      "contribution": -0.013610620508232755
-     },
-     {
-      "ticker": "GLN.JO",
-      "return": -0.3559679957196743,
-      "contribution": -0.010427438632223642
+      "ticker": "BID.JO",
+      "return": -0.1281621696134601,
+      "contribution": -0.012816216961346012
      }
     ]
    },
@@ -675,7 +675,7 @@
     "start": "2015-12-09",
     "end": "2015-12-11",
     "index_return": -0.022160195270897853,
-    "portfolio_return": -0.01767263668583276,
+    "portfolio_return": -0.017687546373673105,
     "proxied": [
      "PRX.JO",
      "ANH.JO",
@@ -719,7 +719,7 @@
     "start": "2020-02-17",
     "end": "2020-03-19",
     "index_return": -0.3460487074382895,
-    "portfolio_return": -0.28970651551964255,
+    "portfolio_return": -0.29094891947074303,
     "proxied": [
      "CFR.JO",
      "BHG.JO"
@@ -825,7 +825,7 @@
     "start": "2008-05-22",
     "end": "2008-11-20",
     "index_return": -0.49210004905992244,
-    "portfolio_return": -0.17060882991896753,
+    "portfolio_return": -0.17407452909709792,
     "proxied": [
      "PRX.JO",
      "SSW.JO",
@@ -854,19 +854,19 @@
       "contribution": -0.014804183437789787
      },
      {
-      "ticker": "SSW.JO",
-      "return": -1.140391056428003,
-      "contribution": -0.010897844533619987
-     },
-     {
       "ticker": "AGL.JO",
       "return": -0.683371277758133,
       "contribution": -0.010872990214177092
      },
      {
-      "ticker": "NPH.JO",
-      "return": -1.082235320117321,
-      "contribution": -0.010549550217070625
+      "ticker": "PRX.JO",
+      "return": -0.38655811376651117,
+      "contribution": -0.010839853245878356
+     },
+     {
+      "ticker": "BHG.JO",
+      "return": -0.4187668188995017,
+      "contribution": -0.010038089351801796
      }
     ]
    },
@@ -876,7 +876,7 @@
     "start": "2015-12-09",
     "end": "2015-12-11",
     "index_return": -0.022160195270897853,
-    "portfolio_return": -0.033236573792149116,
+    "portfolio_return": -0.033232800678492956,
     "proxied": [
      "PRX.JO",
      "SSW.JO",
@@ -924,7 +924,7 @@
     "start": "2020-02-17",
     "end": "2020-03-19",
     "index_return": -0.3460487074382895,
-    "portfolio_return": -0.3380397453186303,
+    "portfolio_return": -0.3356897208430233,
     "proxied": [
      "SSW.JO",
      "NPH.JO",
@@ -1032,7 +1032,7 @@
     "start": "2008-05-22",
     "end": "2008-11-20",
     "index_return": -0.49210004905992244,
-    "portfolio_return": -0.105211024171911,
+    "portfolio_return": -0.110391719174226,
     "proxied": [
      "ANH.JO",
      "GLN.JO",
@@ -1047,13 +1047,13 @@
      },
      {
       "ticker": "BHG.JO",
-      "return": -0.39413520240221966,
-      "contribution": -0.039413520239955147
+      "return": -0.4187668188995017,
+      "contribution": -0.04187668188966667
      },
      {
       "ticker": "GLN.JO",
-      "return": -0.3559679957196743,
-      "contribution": -0.02693191797764269
+      "return": -0.3874095805291485,
+      "contribution": -0.029310733470490246
      },
      {
       "ticker": "ANG.JO",
@@ -1073,7 +1073,7 @@
     "start": "2015-12-09",
     "end": "2015-12-11",
     "index_return": -0.022160195270897853,
-    "portfolio_return": -0.03886503679412866,
+    "portfolio_return": -0.03886944420717946,
     "proxied": [
      "ANH.JO",
      "BHG.JO"
@@ -1113,7 +1113,7 @@
     "start": "2020-02-17",
     "end": "2020-03-19",
     "index_return": -0.3460487074382895,
-    "portfolio_return": -0.3539232562977943,
+    "portfolio_return": -0.3550424737139356,
     "proxied": [
      "BHG.JO"
     ],

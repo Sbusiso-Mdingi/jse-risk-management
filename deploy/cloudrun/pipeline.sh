@@ -17,6 +17,7 @@ python research/backtest.py
 python research/evaluate.py
 python research/var_backtest.py
 python research/stress_test.py
+python research/costs.py
 python research/export.py
 
 ( cd service && PYTHONPATH=..:. python -m pytest -q tests )

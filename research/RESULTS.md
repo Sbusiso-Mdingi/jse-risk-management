@@ -42,22 +42,39 @@ One-day forecasts over validation, 2,421 sessions. Pass: Christoffersen conditio
 
 The normal model fails at 99% everywhere, and filtered historical simulation passes everywhere. Plain historical simulation fails on clustered exceedances for equal weight and minimum variance, and on the count for the Satrix 40.
 
+## Costs on a JSE schedule
+
+The protocol's costs (10 bps a side plus 0.25% transfer tax on purchases) are close to an institution's and below a retail account's. `research/costs.py` re-prices every rebalance under a JSE schedule: brokerage plus 15% VAT, half the bid-ask spread, Strate and the investor protection levy on each execution, and transfer tax on purchases. Reporting only; the verdicts above stand on the protocol's costs. Validation, CAGR and Sharpe ratio:
+
+| Rule | Turnover a month | Protocol (45 bps round trip) | Institutional (59 bps) | Retail (95 bps) | Retail, 15 bp half-spread (115 bps) |
+| --- | --- | --- | --- | --- | --- |
+| R0 Original app | 35% | 7.7%, 0.14 | 7.1%, 0.11 | 5.5%, 0.02 | 4.6%, −0.02 |
+| R1 Equal weight | 6% | 11.5%, 0.33 | 11.4%, 0.32 | 11.1%, 0.31 | 10.9%, 0.30 |
+| R2 Inverse volatility | 6% | 8.8%, 0.20 | 8.7%, 0.19 | 8.4%, 0.17 | 8.2%, 0.17 |
+| R3 Minimum variance | 13% | 4.0%, −0.10 | 3.8%, −0.12 | 3.3%, −0.15 | 3.0%, −0.17 |
+| R4 Equal risk contribution | 7% | 9.6%, 0.24 | 9.5%, 0.23 | 9.1%, 0.22 | 9.0%, 0.21 |
+| R5 Maximum Sharpe | 23% | 11.3%, 0.31 | 10.9%, 0.29 | 9.7%, 0.24 | 9.1%, 0.21 |
+
+No verdict changes under any schedule. Realistic costs widen every gap, because the rules that lose to equal weight are also the ones that trade most: at retail costs the original method gives up 2.2 percentage points a year to trading, equal weight 0.4.
+
 ## Stress scenarios
 
-Portfolios set at the 30 September 2026 rebalance. Peak-to-trough windows of the Top 40 price index.
+Portfolios set at the latest month-end rebalance (30 October 2026). Peak-to-trough windows of the Top 40 price index.
 
 | Portfolio | 2008 crisis | Dec 2015 | Covid 2020 | Apr 2025 tariffs |
 | --- | --- | --- | --- | --- |
-| Original app | −21.3% | −4.3% | −34.5% | −9.2% |
-| Equal weight | −27.1% | −3.1% | −37.0% | −10.3% |
-| Minimum variance | −11.1% | −1.8% | −29.0% | −5.2% |
-| Maximum Sharpe | −10.5% | −3.9% | −35.4% | −9.1% |
+| Original app | −20.5% | −4.3% | −33.8% | −9.2% |
+| Equal weight | −26.3% | −3.1% | −36.3% | −10.3% |
+| Minimum variance | −12.6% | −1.8% | −29.1% | −5.2% |
+| Maximum Sharpe | −11.0% | −3.9% | −35.5% | −9.1% |
 | Top 40 index | −49.2% | −2.2% | −34.6% | −9.3% |
 
-Today's holdings are survivors, so the 2008 figures in particular flatter every rule; 54% of minimum variance's weight in the 2008 window (30% for equal weight) is proxied by beta because those shares had no prices then.
+Today's holdings are survivors, so the 2008 figures in particular flatter every rule; 58% of minimum variance's weight in the 2008 window (33% for equal weight) is proxied by beta because those shares had no prices then.
 
 ## Amendments and corrections
 
+- **17 November 2026: stress proxies on log returns.** A share without prices in a stress window took its beta times the index's simple return, so a high-beta share could lose more than everything (Northam −108% and Sibanye-Stillwater −114% in the 2008 window). The beta now scales the index's log return, which keeps every loss above −100%. The 2008 figures move by up to 0.8 points (equal weight −27.1% to −26.3% at the October book); the other windows are short enough that the change is a tenth of a point or less. Stress scenarios are illustrations, not tests, so no verdict is involved.
+- **17 November 2026: a JSE cost schedule beside the protocol's costs** (see above). Reporting only.
 - **12 November 2026: prices now include dividends.** Yahoo's adjusted close for JSE shares carries only about a hundredth of each dividend (the dividend in cents applied as if in rand), so every figure before this date was in effect on price returns, for the shares and for the Satrix 40. Across the 256 shares with enough history, the adjusted series carried a median 0.04% a year of dividends. Prices are now total returns built from Yahoo's close and its dividend events (`jserisk/data.py`, `with_dividends`): a dividend above 25% of the previous close is taken to be 100 times too large (Yahoo's amounts are sometimes in hundredths of a cent), one between 10% and 25% takes whichever unit the ex-date price drop fits, the same amount listed again within 45 days counts once (the Satrix 40's distributions were listed two or three times each to 2024), and the twelve preference shares keep Yahoo's own series (their prices and amounts switch between rand and cents). The correction adds a median 3.5% a year to the shares and 3.1% to the Satrix 40 over 2015 to September 2026. Same data, before and after, validation January 2017 to September 2026:
 
   | | Before (price only) | After (total return) |
@@ -82,6 +99,6 @@ Today's holdings are survivors, so the 2008 figures in particular flatter every 
 ```sh
 python research/fetch.py
 python research/backtest.py && python research/evaluate.py
-python research/var_backtest.py && python research/stress_test.py
+python research/var_backtest.py && python research/stress_test.py && python research/costs.py
 python research/export.py
 ```

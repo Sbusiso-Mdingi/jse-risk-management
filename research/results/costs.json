@@ -1,0 +1,274 @@
+{
+ "tiers": {
+  "protocol": {
+   "label": "Protocol: 10 bps a side, flat",
+   "brokerage": 10.0,
+   "vat": false,
+   "spread": 0.0,
+   "strate": 0.0,
+   "per_side_bps": 10.0,
+   "round_trip_bps": 45.0
+  },
+  "institutional": {
+   "label": "JSE, institutional",
+   "brokerage": 10.0,
+   "vat": true,
+   "spread": 5.0,
+   "strate": 0.3,
+   "per_side_bps": 16.8,
+   "round_trip_bps": 58.6
+  },
+  "retail": {
+   "label": "JSE, retail brokerage",
+   "brokerage": 25.0,
+   "vat": true,
+   "spread": 5.0,
+   "strate": 1.0,
+   "per_side_bps": 34.75,
+   "round_trip_bps": 94.5
+  },
+  "retail_wide": {
+   "label": "JSE, retail, wider spreads",
+   "brokerage": 25.0,
+   "vat": true,
+   "spread": 15.0,
+   "strate": 1.0,
+   "per_side_bps": 44.75,
+   "round_trip_bps": 114.5
+  }
+ },
+ "rules": {
+  "R0": {
+   "turnover_per_month": 0.3475264213142617,
+   "protocol": {
+    "cagr": 0.0768792670854328,
+    "sharpe": 0.13901902961114493,
+    "vs_stx40": {
+     "diff_annual": -0.2470538992151498,
+     "t_stat": -1.6617600359877656
+    }
+   },
+   "institutional": {
+    "cagr": 0.070739795320101,
+    "sharpe": 0.10754024953167056,
+    "vs_stx40": {
+     "diff_annual": -0.278539182503056,
+     "t_stat": -1.8717640887206906
+    }
+   },
+   "retail": {
+    "cagr": 0.05468722665501757,
+    "sharpe": 0.024491022279686563,
+    "vs_stx40": {
+     "diff_annual": -0.3616055669140401,
+     "t_stat": -2.419642535748092
+    }
+   },
+   "retail_wide": {
+    "cagr": 0.04584028827236719,
+    "sharpe": -0.021709395027095447,
+    "vs_stx40": {
+     "diff_annual": -0.407815528775682,
+     "t_stat": -2.7194445169656998
+    }
+   }
+  },
+  "R1": {
+   "turnover_per_month": 0.05899546542316989,
+   "protocol": {
+    "cagr": 0.11481743242406206,
+    "sharpe": 0.326951018621576,
+    "vs_stx40": {
+     "diff_annual": -0.05908308529179269,
+     "t_stat": -0.3939614194520111
+    }
+   },
+   "institutional": {
+    "cagr": 0.11368624741126543,
+    "sharpe": 0.3214635165494656,
+    "vs_stx40": {
+     "diff_annual": -0.06457172102822077,
+     "t_stat": -0.4306342927643066
+    }
+   },
+   "retail": {
+    "cagr": 0.11070526094479205,
+    "sharpe": 0.3069740658735381,
+    "vs_stx40": {
+     "diff_annual": -0.07906416508310302,
+     "t_stat": -0.5275012965387905
+    }
+   },
+   "retail_wide": {
+    "cagr": 0.10904769127889757,
+    "sharpe": 0.29889961731981357,
+    "vs_stx40": {
+     "diff_annual": -0.08714028173901531,
+     "t_stat": -0.5814972235050216
+    }
+   }
+  },
+  "R2": {
+   "turnover_per_month": 0.06097123538808869,
+   "protocol": {
+    "cagr": 0.08784320987773442,
+    "sharpe": 0.19553658539608756,
+    "vs_stx40": {
+     "diff_annual": -0.19052466745533073,
+     "t_stat": -1.1516006203396585
+    }
+   },
+   "institutional": {
+    "cagr": 0.08673037905497027,
+    "sharpe": 0.18964930091575594,
+    "vs_stx40": {
+     "diff_annual": -0.19641316819112,
+     "t_stat": -1.187418396318956
+    }
+   },
+   "retail": {
+    "cagr": 0.08379779844379787,
+    "sharpe": 0.17410625118801648,
+    "vs_stx40": {
+     "diff_annual": -0.2119594289610852,
+     "t_stat": -1.281979866314938
+    }
+   },
+   "retail_wide": {
+    "cagr": 0.08216716827561554,
+    "sharpe": 0.16544596835612313,
+    "vs_stx40": {
+     "diff_annual": -0.22062150092280491,
+     "t_stat": -1.3346607547734939
+    }
+   }
+  },
+  "R3": {
+   "turnover_per_month": 0.1274483942378178,
+   "protocol": {
+    "cagr": 0.0396497487564238,
+    "sharpe": -0.10480175526138291,
+    "vs_stx40": {
+     "diff_annual": -0.4909250550798214,
+     "t_stat": -2.5434866297145486
+    }
+   },
+   "institutional": {
+    "cagr": 0.03768530003576043,
+    "sharpe": -0.11758292041384669,
+    "vs_stx40": {
+     "diff_annual": -0.5037088606961397,
+     "t_stat": -2.6106185869492835
+    }
+   },
+   "retail": {
+    "cagr": 0.03251568017363127,
+    "sharpe": -0.15130569224406543,
+    "vs_stx40": {
+     "diff_annual": -0.5374385993215633,
+     "t_stat": -2.7872159881910026
+    }
+   },
+   "retail_wide": {
+    "cagr": 0.029645676182636693,
+    "sharpe": -0.1700795923309485,
+    "vs_stx40": {
+     "diff_annual": -0.5562163779127924,
+     "t_stat": -2.8851376246507496
+    }
+   }
+  },
+  "R4": {
+   "turnover_per_month": 0.06633675568022188,
+   "protocol": {
+    "cagr": 0.09575470119191776,
+    "sharpe": 0.24062774544925317,
+    "vs_stx40": {
+     "diff_annual": -0.1454241920090167,
+     "t_stat": -0.9620077742200551
+    }
+   },
+   "institutional": {
+    "cagr": 0.09455505525015662,
+    "sharpe": 0.23400674976170802,
+    "vs_stx40": {
+     "diff_annual": -0.15204655552958732,
+     "t_stat": -1.0062475381421636
+    }
+   },
+   "retail": {
+    "cagr": 0.09139404569789611,
+    "sharpe": 0.21652517194529564,
+    "vs_stx40": {
+     "diff_annual": -0.16953174486918984,
+     "t_stat": -1.123135874829278
+    }
+   },
+   "retail_wide": {
+    "cagr": 0.0896366200395653,
+    "sharpe": 0.20678396576272084,
+    "vs_stx40": {
+     "diff_annual": -0.1792749634897951,
+     "t_stat": -1.1883070229916184
+    }
+   }
+  },
+  "R5": {
+   "turnover_per_month": 0.2327980930891545,
+   "protocol": {
+    "cagr": 0.11348432244205853,
+    "sharpe": 0.31372102980771654,
+    "vs_stx40": {
+     "diff_annual": -0.07231580729209097,
+     "t_stat": -0.3697473359869828
+    }
+   },
+   "institutional": {
+    "cagr": 0.10895743071057207,
+    "sharpe": 0.2928274935824251,
+    "vs_stx40": {
+     "diff_annual": -0.09321365991784689,
+     "t_stat": -0.47595945921648963
+    }
+   },
+   "retail": {
+    "cagr": 0.09708793120528791,
+    "sharpe": 0.2376409941197796,
+    "vs_stx40": {
+     "diff_annual": -0.14841156037213632,
+     "t_stat": -0.7547454794499726
+    }
+   },
+   "retail_wide": {
+    "cagr": 0.09052554435071336,
+    "sharpe": 0.2068876274864288,
+    "vs_stx40": {
+     "diff_annual": -0.17917128035058816,
+     "t_stat": -0.9088336071886799
+    }
+   }
+  }
+ },
+ "verdicts": {
+  "protocol": {
+   "P2": false,
+   "P3": false,
+   "best_vs_stx40": "R1"
+  },
+  "institutional": {
+   "P2": false,
+   "P3": false,
+   "best_vs_stx40": "R1"
+  },
+  "retail": {
+   "P2": false,
+   "P3": false,
+   "best_vs_stx40": "R1"
+  },
+  "retail_wide": {
+   "P2": false,
+   "P3": false,
+   "best_vs_stx40": "R1"
+  }
+ }
+}
