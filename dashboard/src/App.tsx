@@ -1,10 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
-import { api, type Live, type ModelId, type PortfolioResult, type Research, type RuleId, type Summary } from "./api";
-import { FrontierChart, GrowthChart, VarChart, type Line } from "./charts";
+import {
+  api,
+  type Live,
+  type ModelId,
+  type PortfolioResult,
+  type Research,
+  type RuleId,
+} from "./api";
+import { Blind } from "./Blind";
+import { FrontierChart, GrowthChart, type Line } from "./charts";
 import { fmtDate, num, pct, short } from "./format";
 
-type Tab = "backtest" | "risk" | "stress" | "build" | "method";
-type PeriodKey = "design" | "validation" | "live" | "all";
+type Tab = "blind" | "desk" | "live" | "how";
 
 const RULES: { id: RuleId; label: string; sub: string }[] = [
   { id: "R0", label: "Random search", sub: "best of 5,000 random weights" },
@@ -14,16 +21,245 @@ const RULES: { id: RuleId; label: string; sub: string }[] = [
   { id: "R4", label: "Equal risk", sub: "risk parity" },
   { id: "R5", label: "Maximum Sharpe", sub: "shrunk Σ, 10% cap" },
 ];
-const ruleLabel = (id: string) => RULES.find((r) => r.id === id)?.label ?? (id === "STX40" ? "Satrix 40" : id);
+const ruleLabel = (id: string) =>
+  RULES.find((r) => r.id === id)?.label ?? (id === "STX40" ? "Satrix 40" : id);
 const MODELS: ModelId[] = ["fhs", "historical", "normal", "ewma"];
-const VAR_PORTFOLIOS = [
-  { id: "R1", label: "Equal weight" },
-  { id: "R3", label: "Minimum variance" },
-  { id: "STX40", label: "Satrix 40" },
-] as const;
 const ORIGINAL_DEFAULT = ["NPN.JO", "BTI.JO", "SOL.JO"];
 
-function Metric({ value, label, sub, neg }: { value: string; label: string; sub?: string; neg?: boolean }) {
+export function App({ embedded }: { embedded: boolean }) {
+  const [research, setResearch] = useState<Research | null>(null);
+  const [live, setLive] = useState<Live | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [tab, setTab] = useState<Tab>(
+    () => (new URLSearchParams(location.search).get("tab") as Tab) || "blind",
+  );
+
+  useEffect(() => {
+    api.research().then(setResearch, (e) => setError(String(e)));
+    const loadLive = () =>
+      api.live().then(setLive, () => setTimeout(loadLive, 15000));
+    loadLive();
+  }, []);
+
+  if (error)
+    return <div className="preview loading">Could not load: {error}</div>;
+  if (!research)
+    return (
+      <div className="preview loading">
+        Waking the server; the first load can take half a minute…
+      </div>
+    );
+
+  return (
+    <div className="preview">
+      <header className="head">
+        <div>
+          <p className="eyebrow">JSE portfolio risk</p>
+          <h1 className="serif">
+            Set a portfolio <em>without hindsight</em>
+          </h1>
+        </div>
+        <div className="status">
+          <span>
+            <i className={`dot${live ? "" : " stale"}`} />
+            {live
+              ? `Live prices to ${fmtDate(live.date[live.date.length - 1] ?? research.data_end)}`
+              : "Loading live prices"}
+          </span>
+          <span>Rules fixed {fmtDate(research.freeze)}</span>
+          <span>Last rebalance {fmtDate(research.latest_rebalance)}</span>
+        </div>
+      </header>
+
+      <nav className="tabs" role="tablist">
+        {(
+          [
+            ["blind", "The blind month"],
+            ["desk", "Risk desk today"],
+            ["live", "Live record"],
+            ["how", "How it works"],
+          ] as [Tab, string][]
+        ).map(([id, label]) => (
+          <button
+            key={id}
+            role="tab"
+            aria-selected={tab === id}
+            onClick={() => setTab(id)}
+          >
+            {label}
+          </button>
+        ))}
+      </nav>
+
+      {tab === "blind" && <Blind />}
+      {tab === "desk" && <Build research={research} />}
+      {tab === "live" && <LiveRecord research={research} live={live} />}
+      {tab === "how" && <How research={research} />}
+
+      <p className="footer-note">
+        Prices from Yahoo Finance, fetched when you use the page and not stored.
+        Shares still listed in 2024 only, so firms that later delisted are
+        missing. Research output, not investment advice.
+        {embedded
+          ? ""
+          : " Source: github.com/Sbusiso-Mdingi/jse-risk-management."}
+      </p>
+    </div>
+  );
+}
+
+function LiveRecord({
+  research,
+  live,
+}: {
+  research: Research;
+  live: Live | null;
+}) {
+  const [rule, setRule] = useState<RuleId>("R1");
+  const keys = [...RULES.map((r) => r.id), "STX40"] as (RuleId | "STX40")[];
+  const lines: Line[] = live
+    ? keys.map((k) => ({
+        key: k,
+        label: ruleLabel(k),
+        values: live.growth[k],
+        tone: k === rule ? "main" : k === "STX40" ? "bench" : "other",
+      }))
+    : [];
+  const end = (k: RuleId | "STX40") =>
+    live ? (live.growth[k][live.growth[k].length - 1] ?? 1) - 1 : 0;
+  const order = [...keys].sort((a, b) => end(b) - end(a));
+  const bk = research.books[rule][research.books[rule].length - 1];
+  const top = Object.entries(bk.weights)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 8);
+  return (
+    <>
+      <p className="lede">
+        On {fmtDate(research.freeze)} each rule&apos;s code was frozen. Since
+        then every rule rebalances at each month end on the prices it can see,
+        and its portfolio is priced after every JSE close, so the record cannot
+        be edited after the fact. A few weeks is far too short to say anything
+        about skill.
+      </p>
+      <div className="controls">
+        <div className="control wide">
+          <span className="label">Highlight</span>
+          <Segmented
+            className="rule-switch"
+            options={RULES}
+            value={rule}
+            onChange={setRule}
+          />
+        </div>
+      </div>
+      <section className="panel split live-split">
+        <div>
+          <div className="panel-head">
+            <h2 className="serif">
+              Since <em>{fmtDate(research.freeze)}</em>
+            </h2>
+          </div>
+          {live && live.date.length > 1 ? (
+            <GrowthChart
+              dates={live.date}
+              lines={lines}
+              label="Growth of one rand since the rules were fixed"
+            />
+          ) : (
+            <div className="loading">Loading live prices…</div>
+          )}
+        </div>
+        <div>
+          <ol className="ranking">
+            {order.map((k, i) => (
+              <li
+                key={k}
+                className={
+                  k === rule ? "me" : k === "STX40" ? "bench" : undefined
+                }
+              >
+                <span className="mono">{i + 1}</span>
+                <span>{ruleLabel(k)}</span>
+                <b className={end(k) < 0 ? "neg" : undefined}>
+                  {live ? pct(end(k), 2) : "…"}
+                </b>
+              </li>
+            ))}
+          </ol>
+          <p className="note">
+            {ruleLabel(rule)} has held {Object.keys(bk.weights).length} shares
+            since {fmtDate(bk.date)}. Largest:{" "}
+            {top.map(([t, x]) => `${short(t)} ${pct(x, 1)}`).join(", ")}.
+          </p>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function How({ research }: { research: Research }) {
+  const n = research.all_tickers.length;
+  return (
+    <section className="panel">
+      <ul className="method">
+        <li>
+          <strong>The shares</strong>
+          At every month end, the 40 most traded of the {n} JSE tickers the 2024
+          version of this app offered, by median traded value over the previous
+          three months, among shares with two years of prices. Total returns,
+          with dividends.
+        </li>
+        <li>
+          <strong>The six rules</strong>
+          Random search keeps the best of 5,000 random portfolios by past return
+          over volatility, as the 2024 app did. Equal weight holds 1/40 of each.
+          Inverse volatility weights by 1/σ. Minimum variance and maximum Sharpe
+          use a Ledoit-Wolf shrunk covariance matrix with at most 10% in any
+          share. Equal risk gives every holding the same share of the
+          portfolio&apos;s variance.
+        </li>
+        <li>
+          <strong>Without hindsight</strong>
+          Every weight is set from prices up to a month-end close and held,
+          drifting, to the next one. The blind month does the same for your own
+          weights.
+        </li>
+        <li>
+          <strong>The loss forecast</strong>A GJR-GARCH(1,1) with Student t
+          errors on the portfolio&apos;s last 1,000 daily returns, refitted at
+          the month end and updated each day. The 99% value at risk is the loss
+          that should be beaten about one day in a hundred; expected shortfall
+          is the average loss on those days. The risk desk also shows historical
+          simulation, a normal model and EWMA beside it.
+        </li>
+        <li>
+          <strong>Costs</strong>
+          In the live record the rules pay 0.10% a side and 0.25% securities
+          transfer tax on purchases at each rebalance. The blind month compares
+          portfolios before costs.
+        </li>
+        <li>
+          <strong>Data</strong>
+          Prices from Yahoo Finance and the T-bill rate from FRED, fetched at
+          run time and not stored. Results generated{" "}
+          {fmtDate(research.generated)}.
+        </li>
+      </ul>
+    </section>
+  );
+}
+
+function Metric({
+  value,
+  label,
+  sub,
+  neg,
+}: {
+  value: string;
+  label: string;
+  sub?: string;
+  neg?: boolean;
+}) {
   return (
     <div className="metric">
       <div className={`value${neg ? " neg" : ""}`}>{value}</div>
@@ -31,11 +267,6 @@ function Metric({ value, label, sub, neg }: { value: string; label: string; sub?
       {sub && <div className="sub">{sub}</div>}
     </div>
   );
-}
-
-function Verdict({ text }: { text: string }) {
-  const tone = text.startsWith("Failed") ? "fail" : text.includes("noise") ? "noise" : "pass";
-  return <span className={`verdict ${tone}`}>{text}</span>;
 }
 
 function Segmented<T extends string | number>({
@@ -52,452 +283,16 @@ function Segmented<T extends string | number>({
   return (
     <div className={`segmented ${className ?? ""}`}>
       {options.map((o) => (
-        <button key={String(o.id)} aria-pressed={o.id === value} onClick={() => onChange(o.id)}>
+        <button
+          key={String(o.id)}
+          aria-pressed={o.id === value}
+          onClick={() => onChange(o.id)}
+        >
           {o.label}
           {o.sub && <span>{o.sub}</span>}
         </button>
       ))}
     </div>
-  );
-}
-
-export function App({ embedded }: { embedded: boolean }) {
-  const [research, setResearch] = useState<Research | null>(null);
-  const [live, setLive] = useState<Live | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [tab, setTab] = useState<Tab>(() => (new URLSearchParams(location.search).get("tab") as Tab) || "backtest");
-
-  useEffect(() => {
-    api.research().then(setResearch, (e) => setError(String(e)));
-    const loadLive = () => api.live().then(setLive, () => setTimeout(loadLive, 15000));
-    loadLive();
-  }, []);
-
-  if (error) return <div className="preview loading">Could not load the research results: {error}</div>;
-  if (!research) return <div className="preview loading">Loading results…</div>;
-
-  return (
-    <div className="preview">
-      <header className="head">
-        <div>
-          <p className="eyebrow">JSE portfolio risk</p>
-          <h1 className="serif">
-            Six ways to weight JSE shares, <em>tested out of sample</em>
-          </h1>
-          <p className="lede">
-            A rebuild of my 2024 portfolio optimisation app. The 2024 version chose the best of 5,000 random weightings and scored it on the same data
-            it was chosen on. Here every rule sets its weights at a month end and is judged on the month that follows, after trading costs and
-            transfer tax. The rules, tests and pass marks were written down before any result was seen.
-          </p>
-        </div>
-        <div className="status">
-          <span>
-            <i className={`dot${live ? "" : " stale"}`} />
-            {live ? `Live prices to ${fmtDate(live.date[live.date.length - 1] ?? research.data_end)}` : "Loading live prices"}
-          </span>
-          <span>Rules fixed {fmtDate(research.freeze)}</span>
-          <span>Last rebalance {fmtDate(research.latest_rebalance)}</span>
-        </div>
-      </header>
-
-      <nav className="tabs" role="tablist">
-        {(
-          [
-            ["backtest", "Backtest"],
-            ["risk", "Risk models"],
-            ["stress", "Stress tests"],
-            ["build", "Build a portfolio"],
-            ["method", "Method"],
-          ] as [Tab, string][]
-        ).map(([id, label]) => (
-          <button key={id} role="tab" aria-selected={tab === id} onClick={() => setTab(id)}>
-            {label}
-          </button>
-        ))}
-      </nav>
-
-      {tab === "backtest" && <Backtest research={research} live={live} />}
-      {tab === "risk" && <RiskModels research={research} />}
-      {tab === "stress" && <StressTab research={research} />}
-      {tab === "build" && <Build research={research} />}
-      {tab === "method" && <Method research={research} />}
-
-      <p className="footer-note">
-        Backtests on Yahoo Finance prices of shares still listed in 2024, so delisted firms are missing and absolute returns are biased upwards.
-        Research output, not investment advice.{embedded ? "" : " Source: github.com/Sbusiso-Mdingi/jse-risk-management."}
-      </p>
-    </div>
-  );
-}
-
-function rebase(dates: string[], values: number[], a: string, b: string) {
-  const idx = dates.map((d, i) => [d, i] as const).filter(([d]) => d >= a && d <= b).map(([, i]) => i);
-  if (!idx.length) return { dates: [] as string[], values: [] as number[] };
-  const i0 = Math.max(0, idx[0] - 1);
-  const base = values[i0];
-  return { dates: idx.map((i) => dates[i]), values: idx.map((i) => values[i] / base) };
-}
-
-function Backtest({ research, live }: { research: Research; live: Live | null }) {
-  const [rule, setRule] = useState<RuleId>("R0");
-  const [period, setPeriod] = useState<PeriodKey>("validation");
-  const P = research.periods;
-
-  const chart = useMemo(() => {
-    const keys = [...RULES.map((r) => r.id), "STX40"] as (RuleId | "STX40")[];
-    if (period === "live") {
-      if (!live) return null;
-      return {
-        dates: live.date,
-        lines: keys.map((k) => ({
-          key: k,
-          label: ruleLabel(k),
-          values: live.growth[k],
-          tone: k === rule ? "main" : k === "STX40" ? "bench" : "other",
-        })) as Line[],
-      };
-    }
-    const [a, b] = period === "all" ? ["2009-01-06", "2100-01-01"] : P[period];
-    let dates: string[] = [];
-    const lines = keys.map((k) => {
-      const r = rebase(research.curves.date, research.curves[k], a, b);
-      dates = r.dates;
-      return { key: k, label: ruleLabel(k), values: r.values, tone: k === rule ? "main" : k === "STX40" ? "bench" : "other" } as Line;
-    });
-    return { dates, lines };
-  }, [research, live, rule, period, P]);
-
-  const stats = (k: RuleId | "STX40"): Summary | null => {
-    if (period === "all" || period === "live") {
-      if (period === "live") {
-        if (!live) return null;
-        const g = live.growth[k];
-        return g.length ? { start: live.date[0], end: live.date[live.date.length - 1], sessions: g.length, cagr: g[g.length - 1] - 1, vol: NaN, sharpe: null, mdd: Math.min(0, ...g.map((v, i) => v / Math.max(...g.slice(0, i + 1), 1) - 1)) } : null;
-      }
-      return null;
-    }
-    return research.rules[k][period] ?? null;
-  };
-  const s = stats(rule);
-  const b = stats("STX40");
-  const turnover = research.rules[rule].turnover_per_month;
-  const periodLabel: Record<PeriodKey, string> = {
-    design: "Tuning, 2008 to 2016",
-    validation: "Test, 2017 to Sep 2026",
-    live: "Live since 1 Oct 2026",
-    all: "Whole record",
-  };
-
-  return (
-    <>
-      <div className="controls">
-        <div className="control wide">
-          <span className="label">Rule</span>
-          <Segmented className="rule-switch" options={RULES} value={rule} onChange={setRule} />
-        </div>
-        <div className="control wide">
-          <span className="label">Period</span>
-          <Segmented
-            options={(["validation", "design", "live", "all"] as PeriodKey[]).map((p) => ({ id: p, label: periodLabel[p] }))}
-            value={period}
-            onChange={setPeriod}
-          />
-        </div>
-      </div>
-
-      {period === "live" ? (
-        <div className="metrics">
-          <Metric value={s ? pct(s.cagr, 2) : "…"} label={`Return since ${fmtDate(research.freeze, { day: "numeric", month: "short" })}`} sub="not annualised" neg={(s?.cagr ?? 0) < 0} />
-          <Metric value={b ? pct(b.cagr, 2) : "…"} label="Satrix 40" sub="same days" neg={(b?.cagr ?? 0) < 0} />
-          <Metric value={s ? String(s.sessions) : "…"} label="Sessions" sub="too few to judge" />
-          <Metric value={s ? pct(s.mdd, 1) : "…"} label="Max drawdown" neg />
-        </div>
-      ) : period === "all" ? (
-        <div className="metrics">
-          <Metric value={pct(research.rules[rule].validation?.cagr)} label="CAGR, 2017 to 2026" />
-          <Metric value={pct(research.rules[rule].design?.cagr)} label="CAGR, 2008 to 2016" />
-          <Metric value={num(research.rules[rule].validation?.sharpe)} label="Sharpe, 2017 to 2026" />
-          <Metric value={num(research.rules.STX40.validation?.sharpe)} label="Satrix 40 Sharpe" sub="2017 to 2026" />
-        </div>
-      ) : (
-        s && (
-          <div className="metrics">
-            <Metric value={pct(s.cagr)} label="CAGR, after costs" neg={(s.cagr ?? 0) < 0} />
-            <Metric value={pct(s.vol)} label="Volatility" />
-            <Metric value={num(s.sharpe)} label="Sharpe" sub={b ? `Satrix 40: ${num(b.sharpe)}` : undefined} neg={(s.sharpe ?? 0) < 0} />
-            <Metric value={pct(s.mdd)} label="Max drawdown" neg />
-            <Metric value={turnover != null ? pct(turnover, 0) : "n/a"} label="Turnover a month" sub="one way" />
-          </div>
-        )
-      )}
-
-      <section className="panel">
-        <div className="panel-head">
-          <h2 className="serif">
-            Growth of one rand <em>{period === "live" ? `since ${fmtDate(research.freeze)}` : "out of sample"}</em>
-          </h2>
-          <div className="legend">
-            <span style={{ color: "var(--primary)" }}>
-              <i />
-              {ruleLabel(rule)}
-            </span>
-            <span style={{ color: "#b58b3c" }}>
-              <i />
-              Satrix 40 ETF
-            </span>
-            <span style={{ color: "var(--border-strong)" }}>
-              <i />
-              Other rules
-            </span>
-          </div>
-        </div>
-        {chart && chart.dates.length > 1 ? (
-          <GrowthChart dates={chart.dates} lines={chart.lines} label="Growth of one rand under each rule" />
-        ) : (
-          <div className="loading">{period === "live" ? "Loading live prices…" : "No data"}</div>
-        )}
-        {period === "live" && (
-          <p className="note">
-            Weights set at the {fmtDate(research.freeze)} close, priced daily from live data, with each rule rebalanced at later month ends by
-            the same unchanged code. A few weeks says nothing about skill; this panel is here so the record cannot be edited after the fact.
-          </p>
-        )}
-        {period === "all" && <p className="note">From January 2009, when the Satrix 40 series starts.</p>}
-      </section>
-
-      <section className="panel">
-        <div className="panel-head">
-          <h2 className="serif">
-            Three questions, <em>set before the test</em>
-          </h2>
-          <span className="eyebrow">2017 to Sep 2026</span>
-        </div>
-        <Tests research={research} />
-      </section>
-
-      {period !== "live" && period !== "all" && (
-        <section className="panel">
-          <div className="panel-head">
-            <h2 className="serif">Every rule, {period === "design" ? "2008 to 2016" : "2017 to Sep 2026"}</h2>
-          </div>
-          <div className="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Rule</th>
-                  <th className="num">CAGR</th>
-                  <th className="num">Volatility</th>
-                  <th className="num">Sharpe</th>
-                  <th className="num">Max drawdown</th>
-                  <th className="num">Window</th>
-                  <th className="num">Sharpe vs Satrix 40 (t)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[...RULES.map((r) => r.id), "STX40" as const].map((k) => {
-                  const v = research.rules[k][period];
-                  const t = k === "STX40" ? null : research.vs_stx40[k as RuleId];
-                  return (
-                    <tr key={k} className={k === rule ? "final" : undefined}>
-                      <td>{ruleLabel(k)}</td>
-                      <td className="num">{pct(v?.cagr)}</td>
-                      <td className="num">{pct(v?.vol)}</td>
-                      <td className="num">{num(v?.sharpe)}</td>
-                      <td className="num">{pct(v?.mdd)}</td>
-                      <td className="num">{research.rules[k].window ? (k === "R0" ? "156 weeks" : `${research.rules[k].window} days`) : ""}</td>
-                      <td className="num">{t && period === "validation" ? `${num(t.diff_annual)} (${num(t.t_stat, 1)})` : ""}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-          <p className="note">
-            Costs: {pct(research.costs.sell, 2)} a side, plus 0.25% securities transfer tax on purchases. The estimation window (one or two
-            years) was chosen per rule on 2008 to 2016 only. Sharpe ratios use the 91-day T-bill.
-          </p>
-        </section>
-      )}
-
-      {period === "validation" && <CostTable research={research} rule={rule} />}
-    </>
-  );
-}
-
-function CostTable({ research, rule }: { research: Research; rule: RuleId }) {
-  const C = research.cost_schedules;
-  const tiers = ["protocol", "institutional", "retail"] as const;
-  const head: Record<(typeof tiers)[number], string> = {
-    protocol: "As tested",
-    institutional: "JSE, institutional",
-    retail: "JSE, retail",
-  };
-  const r0 = C.rules.R0;
-  return (
-    <section className="panel">
-      <div className="panel-head">
-        <h2 className="serif">
-          The same rules at <em>JSE costs</em>
-        </h2>
-        <span className="eyebrow">2017 to Sep 2026</span>
-      </div>
-      <div className="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Rule</th>
-              <th className="num">Turnover a month</th>
-              {tiers.map((k) => (
-                <th key={k} className="num">
-                  {head[k]} ({(Math.round(C.tiers[k].round_trip_bps) / 100).toFixed(2)}% a round trip)
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {RULES.map((r) => (
-              <tr key={r.id} className={r.id === rule ? "final" : undefined}>
-                <td>{r.label}</td>
-                <td className="num">{pct(C.rules[r.id].turnover_per_month, 0)}</td>
-                {tiers.map((k) => (
-                  <td key={k} className="num">
-                    {pct(C.rules[r.id][k].cagr)}, {num(C.rules[r.id][k].sharpe)}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <p className="note">
-        CAGR and Sharpe ratio. Each execution pays brokerage plus 15% VAT, half the bid-ask spread (taken as 0.05% for these shares), and
-        Strate and the investor protection levy; every purchase also pays 0.25% securities transfer tax. Institutional brokerage is taken as
-        0.10% and retail as 0.25%. The answers above do not change at either rate, but the gaps widen: the rules that lose to equal weight are
-        the ones that trade most. At retail rates random search gives up {pct(r0.protocol.cagr - r0.retail.cagr, 1)} a year more than as
-        tested; equal weight gives up {pct(C.rules.R1.protocol.cagr - C.rules.R1.retail.cagr, 1)}.
-      </p>
-    </section>
-  );
-}
-
-function Tests({ research }: { research: Research }) {
-  const R = research.rules;
-  const v = (k: RuleId | "STX40") => R[k].validation!;
-  const p2 = research.tests[1].detail as Record<string, { t_stat: number }>;
-  const p3 = research.tests[2].detail as { t_stat: number };
-  const best = research.tests[1].best as RuleId;
-  const text: Record<string, string> = {
-    P1: `Minimum variance ran at ${pct(v("R3").vol)} volatility, against ${pct(v("R1").vol)} for equal weight and ${pct(v("STX40").vol)} for the Satrix 40. Lower risk did not mean better returns: it made ${pct(v("R3").cagr)} a year with a Sharpe ratio of ${num(v("R3").sharpe)}, significantly worse than equal weight (t = ${num(p2.R3.t_stat, 1)}).`,
-    P2: `${(v(best).sharpe ?? 0) > (v("R1").sharpe ?? 0)
-      ? `${ruleLabel(best)} had the best Sharpe ratio, ${num(v(best).sharpe)} against ${num(v("R1").sharpe)} for equal weight, but the gap is well within noise`
-      : `None of the three beat equal weight. The closest, ${ruleLabel(best).replace(/^./, (c) => c.toLowerCase())}, had a Sharpe ratio of ${num(v(best).sharpe)} against ${num(v("R1").sharpe)} for equal weight`} (t = ${num(p2[best].t_stat, 1)}). Equal risk contribution trailed equal weight (t = ${num(p2.R4.t_stat, 1)}). No rule beat simply holding the Satrix 40 (Sharpe ${num(v("STX40").sharpe)}).`,
-    P3: `Random search made ${pct(v("R0").cagr)} a year with a Sharpe ratio of ${num(v("R0").sharpe)}, below equal weight (t = ${num(p3.t_stat, 1)}). Picking the best of 5,000 random portfolios mostly picks the luckiest past means, and those do not repeat.`,
-  };
-  return (
-    <ul className="tests">
-      {research.tests.map((t) => (
-        <li key={t.id}>
-          <div className="test-head">
-            <span className="mono">{t.id.slice(1)}</span>
-            <strong>{t.claim}</strong>
-            <Verdict text={t.verdict} />
-          </div>
-          <p>{text[t.id]}</p>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function RiskModels({ research }: { research: Research }) {
-  const [port, setPort] = useState<"R1" | "R3" | "STX40">("R1");
-  const [model, setModel] = useState<ModelId>("fhs");
-  const s = research.var[port];
-  const t = s.tests;
-  return (
-    <>
-      <div className="controls">
-        <div className="control wide">
-          <span className="label">Portfolio</span>
-          <Segmented options={VAR_PORTFOLIOS.map((p) => ({ id: p.id, label: p.label }))} value={port} onChange={setPort} />
-        </div>
-        <div className="control wide">
-          <span className="label">Model</span>
-          <Segmented options={MODELS.map((m) => ({ id: m, label: research.var_labels[m] }))} value={model} onChange={setModel} />
-        </div>
-      </div>
-      <div className="metrics">
-        <Metric value={`${t[model].var99.exceedances}`} label="Days beyond 99% VaR" sub={`${num(t[model].var99.expected, 0)} expected`} />
-        <Metric value={num(t[model].var99.p_cc, 3)} label="Christoffersen p, 99%" sub="below 0.05 rejects" neg={t[model].var99.p_cc < 0.05} />
-        <Metric value={num(t[model].es975_z2)} label="ES test Z2" sub="below −0.70 rejects" neg={t[model].es975_z2 < -0.7} />
-        <Metric value={pct(t[model].traffic_light.red, 0)} label="Years in Basel red" sub="rolling 250 days" neg={t[model].traffic_light.red > 0} />
-      </div>
-      <section className="panel">
-        <div className="panel-head">
-          <h2 className="serif">
-            Daily return against the <em>forecast</em> 99% loss
-          </h2>
-          <div className="legend">
-            <span style={{ color: "var(--primary)" }}>
-              <i />
-              −VaR, set the evening before
-            </span>
-            <span style={{ color: "var(--negative)" }}>
-              <i />
-              Exceedance
-            </span>
-          </div>
-        </div>
-        <VarChart dates={s.date} r={s.r} v={s[model]} />
-      </section>
-      <section className="panel">
-        <div className="panel-head">
-          <h2 className="serif">Backtests, 2017 to Sep 2026</h2>
-        </div>
-        <div className="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Model</th>
-                <th className="num">99% days (expected)</th>
-                <th className="num">Kupiec p</th>
-                <th className="num">Christoffersen p</th>
-                <th className="num">97.5% days (expected)</th>
-                <th className="num">Christoffersen p</th>
-                <th className="num">ES Z2</th>
-                <th>Verdict</th>
-              </tr>
-            </thead>
-            <tbody>
-              {MODELS.map((m) => (
-                <tr key={m} className={m === model ? "final" : undefined}>
-                  <td>{research.var_labels[m]}</td>
-                  <td className="num">
-                    {t[m].var99.exceedances} ({num(t[m].var99.expected, 0)})
-                  </td>
-                  <td className="num">{num(t[m].var99.p_value, 3)}</td>
-                  <td className="num">{num(t[m].var99.p_cc, 3)}</td>
-                  <td className="num">
-                    {t[m].var975.exceedances} ({num(t[m].var975.expected, 0)})
-                  </td>
-                  <td className="num">{num(t[m].var975.p_cc, 3)}</td>
-                  <td className="num">{num(t[m].es975_z2)}</td>
-                  <td>
-                    <Verdict text={t[m].passed ? "Passed" : "Failed"} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <p className="note">
-          A model passes if neither conditional coverage test (99% and 97.5%) rejects at 5% and the Acerbi and Szekely Z2 statistic for 97.5%
-          expected shortfall is above −0.70. Every forecast uses only returns up to the previous close; the GJR-GARCH model is refitted at each
-          month end on the last 1,000 sessions. The normal and EWMA models assume thin tails and see too many large losses; plain historical
-          simulation reacts too slowly when volatility jumps, so its misses cluster.
-        </p>
-      </section>
-    </>
   );
 }
 
@@ -531,7 +326,9 @@ function StressTable({ stress }: { stress: PortfolioResult["stress"] }) {
                     .map((w) => `${short(w.ticker)} ${pct(w.return, 0)}`)
                     .join(", ")}
                 </td>
-                <td className="num">{s.proxied_weight ? pct(s.proxied_weight, 0) : "none"}</td>
+                <td className="num">
+                  {s.proxied_weight ? pct(s.proxied_weight, 0) : "none"}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -563,39 +360,10 @@ function StressTable({ stress }: { stress: PortfolioResult["stress"] }) {
   );
 }
 
-function StressTab({ research }: { research: Research }) {
-  const [rule, setRule] = useState<RuleId>("R0");
-  const bk = research.books[rule][research.books[rule].length - 1];
-  const top = Object.entries(bk.weights)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 6);
-  return (
-    <>
-      <div className="controls">
-        <div className="control wide">
-          <span className="label">Portfolio at the {fmtDate(research.latest_rebalance)} rebalance</span>
-          <Segmented className="rule-switch" options={RULES} value={rule} onChange={setRule} />
-        </div>
-      </div>
-      <p className="note">
-        {Object.keys(bk.weights).length} holdings. Largest: {top.map(([t, w]) => `${short(t)} ${pct(w, 1)}`).join(", ")}.
-      </p>
-      <section className="panel">
-        <StressTable stress={research.stress[rule]} />
-        <p className="note">
-          Each holding takes its own price move over the window. A share without prices then (listed later, or relisted, such as Richemont in
-          2023) takes the index move scaled by its beta to the Top 40, on log returns so that no share loses more than everything; the
-          proxied weight column shows how much of the portfolio that covers. The
-          rand scenario uses each share's beta to USD/ZAR on two years of weekly returns. Illustrations, not tests, and flattered by survivorship:
-          shares that collapsed in these episodes and later delisted are not in the universe.
-        </p>
-      </section>
-    </>
-  );
-}
-
 function Build({ research }: { research: Research }) {
-  const [selected, setSelected] = useState<string[]>(research.universe.map((u) => u.ticker));
+  const [selected, setSelected] = useState<string[]>(
+    research.universe.map((u) => u.ticker),
+  );
   const [query, setQuery] = useState("");
   const [rule, setRule] = useState<RuleId>("R3");
   const [window, setWindow] = useState(252);
@@ -603,10 +371,20 @@ function Build({ research }: { research: Research }) {
   const [result, setResult] = useState<PortfolioResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  const names = useMemo(() => Object.fromEntries(research.all_tickers.map((t) => [t.ticker, t.name])), [research]);
+  const names = useMemo(
+    () =>
+      Object.fromEntries(research.all_tickers.map((t) => [t.ticker, t.name])),
+    [research],
+  );
   const matches = query.trim()
     ? research.all_tickers
-        .filter((t) => !selected.includes(t.ticker) && `${t.ticker} ${t.name}`.toLowerCase().includes(query.trim().toLowerCase()))
+        .filter(
+          (t) =>
+            !selected.includes(t.ticker) &&
+            `${t.ticker} ${t.name}`
+              .toLowerCase()
+              .includes(query.trim().toLowerCase()),
+        )
         .slice(0, 8)
     : [];
 
@@ -615,17 +393,33 @@ function Build({ research }: { research: Research }) {
     setErr(null);
     api
       .portfolio(selected, rule, window, cap)
-      .then((r) => (r.error ? setErr(r.error) : setResult(r)), (e) => setErr(String(e.message ?? e)))
+      .then(
+        (r) => (r.error ? setErr(r.error) : setResult(r)),
+        (e) => setErr(String(e.message ?? e)),
+      )
       .finally(() => setLoading(false));
   };
   useEffect(run, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const assets = result?.weights.map((w) => ({ ticker: w.ticker, ret: w.ret, vol: w.vol, weight: w.weight })) ?? [];
-  const sorted = [...(result?.weights ?? [])].sort((a, b) => b.weight - a.weight);
+  const assets =
+    result?.weights.map((w) => ({
+      ticker: w.ticker,
+      ret: w.ret,
+      vol: w.vol,
+      weight: w.weight,
+    })) ?? [];
+  const sorted = [...(result?.weights ?? [])].sort(
+    (a, b) => b.weight - a.weight,
+  );
   const fhs = result?.var.fhs;
 
   return (
     <>
+      <p className="lede">
+        Today, on live prices: choose shares and a rule, and see the weights it
+        sets, the loss each risk model forecasts for tomorrow, and what the
+        portfolio would have lost in four past shocks.
+      </p>
       <div className="controls">
         <div className="control wide">
           <span className="label">
@@ -633,7 +427,12 @@ function Build({ research }: { research: Research }) {
           </span>
           <div className="chips">
             {selected.map((t) => (
-              <button key={t} className="chip" title={names[t]} onClick={() => setSelected(selected.filter((x) => x !== t))}>
+              <button
+                key={t}
+                className="chip"
+                title={names[t]}
+                onClick={() => setSelected(selected.filter((x) => x !== t))}
+              >
                 {short(t)} ×
               </button>
             ))}
@@ -664,10 +463,22 @@ function Build({ research }: { research: Research }) {
             )}
           </div>
           <div className="presets">
-            <button className="reset" onClick={() => setSelected(research.universe.map((u) => u.ticker))}>
-              40 most traded at {fmtDate(research.latest_rebalance, { month: "short", year: "numeric" })}
+            <button
+              className="reset"
+              onClick={() =>
+                setSelected(research.universe.map((u) => u.ticker))
+              }
+            >
+              40 most traded at{" "}
+              {fmtDate(research.latest_rebalance, {
+                month: "short",
+                year: "numeric",
+              })}
             </button>
-            <button className="reset" onClick={() => setSelected(ORIGINAL_DEFAULT)}>
+            <button
+              className="reset"
+              onClick={() => setSelected(ORIGINAL_DEFAULT)}
+            >
               The 2024 version's default
             </button>
             <button className="reset" onClick={() => setSelected([])}>
@@ -677,23 +488,42 @@ function Build({ research }: { research: Research }) {
         </div>
         <div className="control wide">
           <span className="label">Rule</span>
-          <Segmented className="rule-switch" options={RULES} value={rule} onChange={setRule} />
+          <Segmented
+            className="rule-switch"
+            options={RULES}
+            value={rule}
+            onChange={setRule}
+          />
         </div>
         <div className="control">
           <span className="label">Estimation window</span>
-          <Segmented options={[{ id: 252, label: "1 year" }, { id: 504, label: "2 years" }]} value={window} onChange={setWindow} />
+          <Segmented
+            options={[
+              { id: 252, label: "1 year" },
+              { id: 504, label: "2 years" },
+            ]}
+            value={window}
+            onChange={setWindow}
+          />
         </div>
         <div className="control">
           <span className="label">Max weight (min variance, max Sharpe)</span>
           <Segmented
-            options={[0.1, 0.2, 0.35, 1].map((c) => ({ id: c, label: c === 1 ? "None" : pct(c, 0) }))}
+            options={[0.1, 0.2, 0.35, 1].map((c) => ({
+              id: c,
+              label: c === 1 ? "None" : pct(c, 0),
+            }))}
             value={cap}
             onChange={setCap}
           />
         </div>
         <div className="control">
           <span className="label">&nbsp;</span>
-          <button className="run" onClick={run} disabled={loading || selected.length < 2}>
+          <button
+            className="run"
+            onClick={run}
+            disabled={loading || selected.length < 2}
+          >
             {loading ? "Fetching prices…" : "Run on live prices"}
           </button>
         </div>
@@ -703,15 +533,36 @@ function Build({ research }: { research: Research }) {
       {result && (
         <>
           <div className="metrics">
-            <Metric value={pct(result.vol)} label="Volatility" sub="annual, forecast" />
-            <Metric value={fhs ? pct(fhs.var99, 2) : "n/a"} label="1-day 99% VaR" sub="filtered historical" />
-            <Metric value={fhs ? pct(fhs.es975, 2) : "n/a"} label="1-day 97.5% ES" sub="filtered historical" />
-            <Metric value={pct(result.expected_return)} label="Past mean return" sub="in sample, not a forecast" />
-            <Metric value={String(sorted.filter((w) => w.weight > 0.005).length)} label="Holdings over 0.5%" />
+            <Metric
+              value={pct(result.vol)}
+              label="Volatility"
+              sub="annual, forecast"
+            />
+            <Metric
+              value={fhs ? pct(fhs.var99, 2) : "n/a"}
+              label="1-day 99% VaR"
+              sub="filtered historical"
+            />
+            <Metric
+              value={fhs ? pct(fhs.es975, 2) : "n/a"}
+              label="1-day 97.5% ES"
+              sub="filtered historical"
+            />
+            <Metric
+              value={pct(result.expected_return)}
+              label="Past mean return"
+              sub="in sample, not a forecast"
+            />
+            <Metric
+              value={String(sorted.filter((w) => w.weight > 0.005).length)}
+              label="Holdings over 0.5%"
+            />
           </div>
           <p className="note">
-            Weights from the {result.window} sessions to {fmtDate(result.as_of)}. The filtered historical VaR is the model that held up out of sample (see
-            Risk models); the mean return is only what these shares did in the window, which the backtest shows is a poor guide to the next month.
+            Weights from the {result.window} sessions to {fmtDate(result.as_of)}
+            . Filtered historical is the GARCH model the blind month uses; the
+            mean return is only what these shares did in the window, not a
+            forecast.
             {Object.keys(result.excluded).length > 0 &&
               ` Left out: ${Object.entries(result.excluded)
                 .map(([t, why]) => `${short(t)} (${why})`)
@@ -728,18 +579,32 @@ function Build({ research }: { research: Research }) {
                 {sorted
                   .filter((w) => w.weight > 0.001)
                   .map((w) => (
-                    <div key={w.ticker} className="bar-row" title={names[w.ticker]}>
+                    <div
+                      key={w.ticker}
+                      className="bar-row"
+                      title={names[w.ticker]}
+                    >
                       <span className="mono">{short(w.ticker)}</span>
                       <span className="bar">
-                        <i style={{ width: `${(w.weight / sorted[0].weight) * 100}%` }} />
-                        <b style={{ width: `${(Math.max(0, w.risk) / sorted[0].weight) * 100}%` }} />
+                        <i
+                          style={{
+                            width: `${(w.weight / sorted[0].weight) * 100}%`,
+                          }}
+                        />
+                        <b
+                          style={{
+                            width: `${(Math.max(0, w.risk) / sorted[0].weight) * 100}%`,
+                          }}
+                        />
                       </span>
                       <span className="mono num">{pct(w.weight, 1)}</span>
                       <span className="mono num muted">{pct(w.risk, 1)}</span>
                     </div>
                   ))}
               </div>
-              <p className="note">Bar: weight. Line: share of portfolio variance.</p>
+              <p className="note">
+                Bar: weight. Line: share of portfolio variance.
+              </p>
             </div>
             <div>
               <div className="panel-head">
@@ -766,7 +631,9 @@ function Build({ research }: { research: Research }) {
                 </tbody>
               </table>
               <p className="note">
-                One-day losses as a share of the portfolio, from {result.history_sessions} sessions of these weights applied to past returns.
+                One-day losses as a share of the portfolio, from{" "}
+                {result.history_sessions} sessions of these weights applied to
+                past returns.
               </p>
             </div>
           </section>
@@ -776,9 +643,15 @@ function Build({ research }: { research: Research }) {
                 Efficient frontier, <em>in sample</em>
               </h2>
             </div>
-            <FrontierChart frontier={result.frontier} assets={assets} portfolio={{ ret: result.expected_return, vol: result.vol }} rf={result.rf} />
+            <FrontierChart
+              frontier={result.frontier}
+              assets={assets}
+              portfolio={{ ret: result.expected_return, vol: result.vol }}
+              rf={result.rf}
+            />
             <p className="note">
-              Long only, shrunk covariance, the same weight cap. The frontier uses past mean returns, so it is a description of the window, not
+              Long only, shrunk covariance, the same weight cap. The frontier
+              uses past mean returns, so it is a description of the window, not
               a menu of future outcomes.
             </p>
           </section>
@@ -791,59 +664,5 @@ function Build({ research }: { research: Research }) {
         </>
       )}
     </>
-  );
-}
-
-function Method({ research }: { research: Research }) {
-  const n = research.all_tickers.length;
-  return (
-    <section className="panel">
-      <ul className="method">
-        <li>
-          <strong>Universe</strong>
-          The {n} JSE tickers from the 2024 version that Yahoo Finance still serves. At each month end, the 40 with the highest median traded
-          value over the previous three months, among those with two years of history.
-        </li>
-        <li>
-          <strong>Rules</strong>
-          Long only, rebalanced monthly, weights drift between rebalances. Minimum variance and maximum Sharpe use Ledoit-Wolf shrinkage and a 10%
-          cap; equal risk contribution solves Spinu's convex problem. Random search is reproduced as the 2024 version ran it: weekly returns, 5,000
-          uniform draws, no risk-free rate.
-        </li>
-        <li>
-          <strong>Costs</strong>
-          As tested: 0.10% a side, plus 0.25% securities transfer tax on purchases, charged on every rebalance. Also shown at JSE institutional
-          and retail rates (brokerage plus VAT, half-spread, Strate and the levy, transfer tax) on the Backtest tab.
-        </li>
-        <li>
-          <strong>Periods</strong>
-          2008 to 2016 to choose each rule's estimation window and to debug; 2017 to September 2026 as the test, run once; from 1 October 2026
-          live, on rules fixed on 30 September.
-          The Sharpe ratio test is Ledoit and Wolf (2008) with a HAC variance.
-        </li>
-        <li>
-          <strong>Risk models</strong>
-          Historical simulation, normal and EWMA on 250 days, and filtered historical simulation on a GJR-GARCH(1,1) with Student t errors.
-          Kupiec, Christoffersen and Basel traffic-light tests for VaR; Acerbi and Szekely Z2 for expected shortfall.
-        </li>
-        <li>
-          <strong>What changed from 2024</strong>
-          The app scored its weights on the data that chose them, compounded log returns as if they were simple, compared a weekly return with
-          an annual target, defined expected shortfall against that target rather than the VaR tail, and used ad hoc volatility and correlation
-          shocks. Each of these is replaced above.
-        </li>
-        <li>
-          <strong>Limits</strong>
-          Survivorship bias (only firms listed in 2024), which flatters every rule but not the Satrix 40, so the finding that no rule beat it
-          would only be firmer without it. Yahoo histories that start at relistings, no market impact, no dividend tax. The live record is too
-          short to say anything yet.
-        </li>
-        <li>
-          <strong>Data</strong>
-          Prices from Yahoo Finance and the T-bill rate from FRED are downloaded at run time and not redistributed. Rebalanced on{" "}
-          {fmtDate(research.latest_rebalance)}; results generated {fmtDate(research.generated)}.
-        </li>
-      </ul>
-    </section>
   );
 }

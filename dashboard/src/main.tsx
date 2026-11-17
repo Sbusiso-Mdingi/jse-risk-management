@@ -3,7 +3,9 @@ import { createRoot } from "react-dom/client";
 import "./theme.css";
 import { App } from "./App";
 
-const embedded = window.self !== window.top || new URLSearchParams(location.search).has("embed");
+const embedded =
+  window.self !== window.top ||
+  new URLSearchParams(location.search).has("embed");
 if (embedded) document.body.classList.add("embedded");
 const root = document.getElementById("root")!;
 
@@ -16,10 +18,14 @@ if (embedded) {
     last = height;
     window.parent.postMessage({ type: "preview:height", height }, "*");
   };
-  if ("ResizeObserver" in window) new ResizeObserver(() => post()).observe(root);
+  if ("ResizeObserver" in window)
+    new ResizeObserver(() => post()).observe(root);
   window.addEventListener("load", () => post());
   // The host may attach its listener after the first report, so it can ask again.
-  window.addEventListener("message", (e) => e.data?.type === "preview:measure" && post(true));
+  window.addEventListener(
+    "message",
+    (e) => e.data?.type === "preview:measure" && post(true),
+  );
   setInterval(() => post(), 1000);
 }
 

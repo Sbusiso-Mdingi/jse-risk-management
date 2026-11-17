@@ -13,7 +13,7 @@ COPY service/requirements.txt service/requirements.txt
 RUN pip install --no-cache-dir -r service/requirements.txt
 COPY jserisk jserisk
 COPY service/app service/app
-COPY data/research.json data/
+COPY data/research.json data/blind.json data/
 COPY --from=dashboard /build/dist dashboard/dist
 RUN useradd --uid 10001 app
 USER app

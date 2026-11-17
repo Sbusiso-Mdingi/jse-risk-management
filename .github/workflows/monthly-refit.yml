@@ -39,6 +39,7 @@ jobs:
           python research/var_backtest.py
           python research/stress_test.py
           python research/costs.py
+          python research/blind.py
           python research/export.py
 
       - name: Parity tests
@@ -48,7 +49,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/research.json research/results/*.json
+          git add data/research.json data/blind.json research/results/*.json
           git diff --cached --quiet || git commit -m "Monthly refit to $(jq -r '.latest_rebalance' data/research.json)"
           git push
 

@@ -1,18 +1,47 @@
-export type Summary = { start: string; end: string; sessions: number; cagr: number | null; vol: number; sharpe: number | null; mdd: number };
+export type Summary = {
+  start: string;
+  end: string;
+  sessions: number;
+  cagr: number | null;
+  vol: number;
+  sharpe: number | null;
+  mdd: number;
+};
 export type Period = "design" | "validation" | "live";
 export type RuleId = "R0" | "R1" | "R2" | "R3" | "R4" | "R5";
-export type Rule = { label: string; window?: number; turnover_per_month?: number } & Partial<Record<Period, Summary>>;
-export type Coverage = { exceedances: number; expected: number; p_value: number; p_cc: number; p_ind: number; clustered: number };
+export type Rule = {
+  label: string;
+  window?: number;
+  turnover_per_month?: number;
+} & Partial<Record<Period, Summary>>;
+export type Coverage = {
+  exceedances: number;
+  expected: number;
+  p_value: number;
+  p_cc: number;
+  p_ind: number;
+  clustered: number;
+};
 export type ModelTest = {
   var99: Coverage;
   var975: Coverage;
-  traffic_light: { green: number; yellow: number; red: number; latest: number; latest_zone: string };
+  traffic_light: {
+    green: number;
+    yellow: number;
+    red: number;
+    latest: number;
+    latest_zone: string;
+  };
   es975_z2: number;
   mean_var99: number;
   passed: boolean;
 };
 export type ModelId = "historical" | "normal" | "ewma" | "fhs";
-export type VarSeries = { date: string[]; r: number[]; tests: Record<ModelId, ModelTest> } & Record<ModelId, number[]>;
+export type VarSeries = {
+  date: string[];
+  r: number[];
+  tests: Record<ModelId, ModelTest>;
+} & Record<ModelId, number[]>;
 export type HistScenario = {
   key: string;
   label: string;
@@ -24,9 +53,25 @@ export type HistScenario = {
   proxied_weight: number;
   worst: { ticker: string; return: number; contribution: number }[];
 };
-export type HypoScenario = { key: string; label: string; var99_before?: number; var99_after?: number; portfolio_return?: number; rand_beta?: number };
-export type Stress = { historical: HistScenario[]; hypothetical: HypoScenario[] };
-export type Test = { id: string; claim: string; verdict: string; best?: string; detail: Record<string, unknown> };
+export type HypoScenario = {
+  key: string;
+  label: string;
+  var99_before?: number;
+  var99_after?: number;
+  portfolio_return?: number;
+  rand_beta?: number;
+};
+export type Stress = {
+  historical: HistScenario[];
+  hypothetical: HypoScenario[];
+};
+export type Test = {
+  id: string;
+  claim: string;
+  verdict: string;
+  best?: string;
+  detail: Record<string, unknown>;
+};
 
 export type CostTier = "protocol" | "institutional" | "retail" | "retail_wide";
 
@@ -38,8 +83,17 @@ export type Research = {
   periods: Record<Period, [string, string]>;
   costs: { buy: number; sell: number };
   cost_schedules: {
-    tiers: Record<CostTier, { label: string; per_side_bps: number; round_trip_bps: number }>;
-    rules: Record<RuleId, { turnover_per_month: number } & Record<CostTier, { cagr: number; sharpe: number }>>;
+    tiers: Record<
+      CostTier,
+      { label: string; per_side_bps: number; round_trip_bps: number }
+    >;
+    rules: Record<
+      RuleId,
+      { turnover_per_month: number } & Record<
+        CostTier,
+        { cagr: number; sharpe: number }
+      >
+    >;
   };
   rules: Record<RuleId | "STX40", Rule>;
   tests: Test[];
@@ -48,14 +102,29 @@ export type Research = {
   var: Record<"R1" | "R3" | "STX40", VarSeries>;
   var_labels: Record<ModelId, string>;
   stress: Record<RuleId, Stress>;
-  books: Record<RuleId, { date: string; cost: number; weights: Record<string, number> }[]>;
+  books: Record<
+    RuleId,
+    { date: string; cost: number; weights: Record<string, number> }[]
+  >;
   universe: { ticker: string; name: string }[];
   all_tickers: { ticker: string; name: string }[];
 };
 
-export type Live = { date: string[]; growth: Record<RuleId | "STX40", number[]>; freeze: string; missing: string[]; error: string | null };
+export type Live = {
+  date: string[];
+  growth: Record<RuleId | "STX40", number[]>;
+  freeze: string;
+  missing: string[];
+  error: string | null;
+};
 
-export type Holding = { ticker: string; weight: number; risk: number; ret: number; vol: number };
+export type Holding = {
+  ticker: string;
+  weight: number;
+  risk: number;
+  ret: number;
+  vol: number;
+};
 export type PortfolioResult = {
   as_of: string;
   rule: RuleId;
@@ -69,13 +138,44 @@ export type PortfolioResult = {
   sharpe: number;
   frontier: { ret: number; vol: number }[];
   history_sessions: number;
-  var: Partial<Record<ModelId, { var99: number; var975: number; es975: number }>>;
+  var: Partial<
+    Record<ModelId, { var99: number; var975: number; es975: number }>
+  >;
   stress: Stress;
   fetch_errors: Record<string, string>;
   error?: string;
 };
 
-const get = async <T,>(path: string): Promise<T> => {
+export type BlindShare = {
+  ticker: string;
+  name: string;
+  w: Record<RuleId, number>;
+  ret1y: number | null;
+  vol1y: number | null;
+};
+export type BlindMonth = {
+  date: string;
+  next: string;
+  sessions: number;
+  labels: Record<RuleId, string>;
+  shares: BlindShare[];
+};
+export type BlindPlay = {
+  date: string;
+  next: string;
+  days: string[];
+  weights: Record<string, number>;
+  forecast: { var99: number; es99: number; sessions: number };
+  you: number[];
+  var99: number[];
+  hits: number[];
+  month_return: number;
+  rules: Record<RuleId, number[]>;
+  stx40: number[];
+  labels: Record<RuleId, string>;
+};
+
+const get = async <T>(path: string): Promise<T> => {
   const r = await fetch(path);
   if (!r.ok) {
     const body = await r.json().catch(() => ({}));
@@ -87,6 +187,22 @@ const get = async <T,>(path: string): Promise<T> => {
 export const api = {
   research: () => get<Research>("/api/research"),
   live: () => get<Live>("/api/live"),
+  blindMonths: () =>
+    get<{
+      labels: Record<RuleId, string>;
+      months: { date: string; next: string }[];
+    }>("/api/blind/months"),
+  blindMonth: (date: string) =>
+    get<BlindMonth>(`/api/blind/month?date=${date}`),
+  blindPlay: (date: string, w: Record<string, number>) =>
+    get<BlindPlay>(
+      `/api/blind/play?date=${date}&w=${encodeURIComponent(
+        Object.entries(w)
+          .filter(([, x]) => x > 0)
+          .map(([t, x]) => `${t}:${x.toFixed(5)}`)
+          .join(","),
+      )}`,
+    ),
   portfolio: (tickers: string[], rule: RuleId, window: number, cap: number) =>
     get<PortfolioResult>(
       `/api/portfolio?tickers=${encodeURIComponent(tickers.join(","))}&rule=${rule}&window=${window}&cap=${cap}`,

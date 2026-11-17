@@ -18,11 +18,12 @@ python research/evaluate.py
 python research/var_backtest.py
 python research/stress_test.py
 python research/costs.py
+python research/blind.py
 python research/export.py
 
 ( cd service && PYTHONPATH=..:. python -m pytest -q tests )
 
-git add data/research.json research/results/*.json
+git add data/research.json data/blind.json research/results/*.json
 if git diff --cached --quiet; then
   echo "No change in fits; nothing to commit."
 else

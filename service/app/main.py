@@ -20,7 +20,7 @@ from fastapi.staticfiles import StaticFiles
 
 from jserisk.weights import RULES
 
-from . import analyse, market
+from . import analyse, blind, market
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("risk")
@@ -146,6 +146,47 @@ def portfolio(tickers: str = Query(..., description="Comma-separated JSE tickers
     rf = market.tbill(fallback=0.07)
     out = analyse.portfolio(names, rule, window, frames, frames["^J200.JO"], frames["ZAR=X"], rf, cap)
     out["fetch_errors"] = errors
+    return JSONResponse(_clean(out))
+
+
+@app.get("/api/blind/months")
+def blind_months():
+    return blind.index()
+
+
+def _blind_frames(date: str):
+    if date not in blind.MONTHS:
+        raise HTTPException(400, "date must be one of the month ends in /api/blind/months")
+    frames, errors = market.prices(blind.MONTHS[date]["tickers"] + ["^J200.JO"])
+    if "^J200.JO" not in frames:
+        raise HTTPException(503, "Index prices are unavailable right now.")
+    return frames
+
+
+@app.get("/api/blind/month")
+def blind_month(date: str):
+    frames = _blind_frames(date)
+    return JSONResponse(_clean(blind.month(date, frames, frames["^J200.JO"])))
+
+
+@app.get("/api/blind/play")
+def blind_play(date: str, w: str = Query(..., description="Comma-separated TICKER:weight pairs, e.g. NPN.JO:0.5,SBK.JO:0.5")):
+    frames = _blind_frames(date)
+    weights_in: dict[str, float] = {}
+    try:
+        for part in w.split(","):
+            t, x = part.split(":")
+            weights_in[t.strip().upper()] = float(x)
+    except ValueError:
+        raise HTTPException(400, "w must be TICKER:weight pairs")
+    allowed = set(blind.MONTHS[date]["tickers"])
+    if any(t not in allowed for t in weights_in) or any(x < 0 or not math.isfinite(x) for x in weights_in.values()):
+        raise HTTPException(400, "Weights must be non-negative and on that month's 40 shares.")
+    if sum(1 for x in weights_in.values() if x > 0) < 1 or sum(weights_in.values()) <= 0:
+        raise HTTPException(400, "Give at least one share a weight.")
+    out = blind.play(date, weights_in, frames, frames["^J200.JO"])
+    if "error" in out:
+        raise HTTPException(422, out["error"])
     return JSONResponse(_clean(out))
 
 

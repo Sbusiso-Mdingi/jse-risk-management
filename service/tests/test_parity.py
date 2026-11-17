@@ -2,6 +2,7 @@
 import json
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import pytest
 
@@ -69,3 +70,18 @@ def test_total_return_series():
     sbk = sbk[(sbk.index >= "2017-01-01") & (sbk.index <= "2026-09-30")]
     extra = (np.log(sbk["adjusted"].iloc[-1] / sbk["adjusted"].iloc[0]) - np.log(sbk["adjusted_yahoo"].iloc[-1] / sbk["adjusted_yahoo"].iloc[0])) / (len(sbk) / 252)
     assert 0.04 < extra < 0.09                                 # Standard Bank's dividends: about 6% a year
+
+
+@pytest.mark.parametrize("date", ["2009-06-30", "2015-11-30", "2020-03-31", "2026-08-31"])
+def test_blind_month_matches_research(date):
+    """The visitor's portfolio priced at run time reproduces the rule's month when given its weights."""
+    from app import blind
+
+    m = blind.MONTHS[date]
+    fr = frames(m["tickers"] + ["^J200.JO"])
+    for rule in ("R1", "R3"):
+        w = {t: x for t, x in zip(m["tickers"], m["rules"][rule]["w"]) if x > 0}
+        got = blind.play(date, w, fr, fr["^J200.JO"])
+        want = float(np.prod(1 + np.array(m["rules"][rule]["r"])) - 1)
+        assert got["month_return"] == pytest.approx(want, abs=2e-4), (date, rule)
+        assert 0 < got["forecast"]["var99"] < 0.3
