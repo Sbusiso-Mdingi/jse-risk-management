@@ -8,7 +8,7 @@ Design January 2008 to December 2016; validation January 2017 to September 2026.
 
 | Rule | Window | Design Sharpe | Validation CAGR | Volatility | Sharpe | Max drawdown |
 | --- | --- | --- | --- | --- | --- | --- |
-| R0 Original app | 156 | 0.31 | 7.7% | 18.2% | 0.14 | −43.0% |
+| R0 Random search | 156 | 0.31 | 7.7% | 18.2% | 0.14 | −43.0% |
 | R1 Equal weight | 252 | 0.29 | 11.5% | 18.5% | 0.33 | −40.6% |
 | R2 Inverse volatility | 252 | 0.38 | 8.8% | 17.4% | 0.20 | −42.3% |
 | R3 Minimum variance | 504 | 0.55 | 4.0% | 14.8% | −0.10 | −39.2% |
@@ -18,7 +18,7 @@ Design January 2008 to December 2016; validation January 2017 to September 2026.
 
 - **P1 passed.** Minimum variance ran at 14.8% volatility against 18.5% for equal weight and 18.6% for the Satrix 40. It also returned 4.0% a year, with a Sharpe ratio significantly below equal weight (t = −2.61).
 - **P2 failed.** None of minimum variance, equal risk contribution and maximum Sharpe beat equal weight. The closest, maximum Sharpe, had a Sharpe ratio of 0.31 against 0.33 (t = −0.07); equal risk contribution trailed (t = −1.35). Before the dividend correction (below) maximum Sharpe was ahead by 0.09 (t = 0.42) and P2 was recorded as passed within noise; that lead came from the price data, not the rule.
-- **P3 failed.** The original app's method trailed equal weight by 0.19 in annual Sharpe (t = −2.58).
+- **P3 failed.** Random search trailed equal weight by 0.19 in annual Sharpe (t = −2.58).
 - **No rule beat the Satrix 40** on Sharpe in validation. The closest was maximum Sharpe (t = −0.37).
 
 ## Value at risk and expected shortfall
@@ -48,14 +48,14 @@ The protocol's costs (10 bps a side plus 0.25% transfer tax on purchases) are cl
 
 | Rule | Turnover a month | Protocol (45 bps round trip) | Institutional (59 bps) | Retail (95 bps) | Retail, 15 bp half-spread (115 bps) |
 | --- | --- | --- | --- | --- | --- |
-| R0 Original app | 35% | 7.7%, 0.14 | 7.1%, 0.11 | 5.5%, 0.02 | 4.6%, −0.02 |
+| R0 Random search | 35% | 7.7%, 0.14 | 7.1%, 0.11 | 5.5%, 0.02 | 4.6%, −0.02 |
 | R1 Equal weight | 6% | 11.5%, 0.33 | 11.4%, 0.32 | 11.1%, 0.31 | 10.9%, 0.30 |
 | R2 Inverse volatility | 6% | 8.8%, 0.20 | 8.7%, 0.19 | 8.4%, 0.17 | 8.2%, 0.17 |
 | R3 Minimum variance | 13% | 4.0%, −0.10 | 3.8%, −0.12 | 3.3%, −0.15 | 3.0%, −0.17 |
 | R4 Equal risk contribution | 7% | 9.6%, 0.24 | 9.5%, 0.23 | 9.1%, 0.22 | 9.0%, 0.21 |
 | R5 Maximum Sharpe | 23% | 11.3%, 0.31 | 10.9%, 0.29 | 9.7%, 0.24 | 9.1%, 0.21 |
 
-No verdict changes under any schedule. Realistic costs widen every gap, because the rules that lose to equal weight are also the ones that trade most: at retail costs the original method gives up 2.2 percentage points a year to trading, equal weight 0.4.
+No verdict changes under any schedule. Realistic costs widen every gap, because the rules that lose to equal weight are also the ones that trade most: at retail costs random search gives up 2.2 percentage points a year to trading, equal weight 0.4.
 
 ## Stress scenarios
 
@@ -63,7 +63,7 @@ Portfolios set at the latest month-end rebalance (30 October 2026). Peak-to-trou
 
 | Portfolio | 2008 crisis | Dec 2015 | Covid 2020 | Apr 2025 tariffs |
 | --- | --- | --- | --- | --- |
-| Original app | −20.5% | −4.3% | −33.8% | −9.2% |
+| Random search | −20.5% | −4.3% | −33.8% | −9.2% |
 | Equal weight | −26.3% | −3.1% | −36.3% | −10.3% |
 | Minimum variance | −12.6% | −1.8% | −29.1% | −5.2% |
 | Maximum Sharpe | −11.0% | −3.9% | −35.5% | −9.1% |
@@ -82,13 +82,13 @@ Today's holdings are survivors, so the 2008 figures in particular flatter every 
   | Equal weight: CAGR, Sharpe | 6.7%, 0.09 | 11.5%, 0.33 |
   | Maximum Sharpe: CAGR, Sharpe | 8.4%, 0.18 | 11.3%, 0.31 |
   | Minimum variance: CAGR, Sharpe | −0.6%, −0.41 | 4.0%, −0.10 |
-  | Original app: CAGR, Sharpe | 3.1%, −0.09 | 7.7%, 0.14 |
+  | Random search: CAGR, Sharpe | 3.1%, −0.09 | 7.7%, 0.14 |
   | Satrix 40: CAGR, Sharpe | 9.3%, 0.22 | 12.7%, 0.39 |
   | P1 (minimum variance less volatile) | passed | passed |
   | P2 (a covariance rule beats equal weight) | passed, within noise (t = 0.42) | failed (t = −0.07) |
-  | P3 (original beats equal weight) | failed (t = −2.36) | failed (t = −2.58) |
+  | P3 (random search beats equal weight) | failed (t = −2.36) | failed (t = −2.58) |
 
-  Volatilities, the VaR verdicts (only filtered historical simulation passes) and the stress results barely move. The lookback windows chosen on design are unchanged. The live books from the freeze are recomputed on the corrected prices: equal weight and the original method hold the same weights, minimum variance and the other covariance rules differ by about 1%, and maximum Sharpe by 6 to 8% of the portfolio. Recorded in `PROTOCOL.md`.
+  Volatilities, the VaR verdicts (only filtered historical simulation passes) and the stress results barely move. The lookback windows chosen on design are unchanged. The live books from the freeze are recomputed on the corrected prices: equal weight and random search hold the same weights, minimum variance and the other covariance rules differ by about 1%, and maximum Sharpe by 6 to 8% of the portfolio. Recorded in `PROTOCOL.md`.
 
 - The history requirement for the investable set was raised from 252 to 504 sessions before any backtest (see `PROTOCOL.md`).
 - The GJR-GARCH refit first ran one session late (data up to the first session of a month instead of the month end). Fixed before writing up; the results were nearly unchanged.

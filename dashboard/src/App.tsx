@@ -7,7 +7,7 @@ type Tab = "backtest" | "risk" | "stress" | "build" | "method";
 type PeriodKey = "design" | "validation" | "live" | "all";
 
 const RULES: { id: RuleId; label: string; sub: string }[] = [
-  { id: "R0", label: "Original app", sub: "best of 5,000 random weights" },
+  { id: "R0", label: "Random search", sub: "best of 5,000 random weights" },
   { id: "R1", label: "Equal weight", sub: "1/N" },
   { id: "R2", label: "Inverse volatility", sub: "1 / σ" },
   { id: "R3", label: "Minimum variance", sub: "shrunk Σ, 10% cap" },
@@ -85,7 +85,7 @@ export function App({ embedded }: { embedded: boolean }) {
             Six ways to weight JSE shares, <em>tested out of sample</em>
           </h1>
           <p className="lede">
-            A rebuild of my 2024 portfolio optimisation app. The original chose the best of 5,000 random weightings and scored it on the same data
+            A rebuild of my 2024 portfolio optimisation app. The 2024 version chose the best of 5,000 random weightings and scored it on the same data
             it was chosen on. Here every rule sets its weights at a month end and is judged on the month that follows, after trading costs and
             transfer tax. The rules, tests and pass marks were written down before any result was seen.
           </p>
@@ -373,7 +373,7 @@ function CostTable({ research, rule }: { research: Research; rule: RuleId }) {
         CAGR and Sharpe ratio. Each execution pays brokerage plus 15% VAT, half the bid-ask spread (taken as 0.05% for these shares), and
         Strate and the investor protection levy; every purchase also pays 0.25% securities transfer tax. Institutional brokerage is taken as
         0.10% and retail as 0.25%. The answers above do not change at either rate, but the gaps widen: the rules that lose to equal weight are
-        the ones that trade most. At retail rates the original method gives up {pct(r0.protocol.cagr - r0.retail.cagr, 1)} a year more than as
+        the ones that trade most. At retail rates random search gives up {pct(r0.protocol.cagr - r0.retail.cagr, 1)} a year more than as
         tested; equal weight gives up {pct(C.rules.R1.protocol.cagr - C.rules.R1.retail.cagr, 1)}.
       </p>
     </section>
@@ -391,7 +391,7 @@ function Tests({ research }: { research: Research }) {
     P2: `${(v(best).sharpe ?? 0) > (v("R1").sharpe ?? 0)
       ? `${ruleLabel(best)} had the best Sharpe ratio, ${num(v(best).sharpe)} against ${num(v("R1").sharpe)} for equal weight, but the gap is well within noise`
       : `None of the three beat equal weight. The closest, ${ruleLabel(best).replace(/^./, (c) => c.toLowerCase())}, had a Sharpe ratio of ${num(v(best).sharpe)} against ${num(v("R1").sharpe)} for equal weight`} (t = ${num(p2[best].t_stat, 1)}). Equal risk contribution trailed equal weight (t = ${num(p2.R4.t_stat, 1)}). No rule beat simply holding the Satrix 40 (Sharpe ${num(v("STX40").sharpe)}).`,
-    P3: `The original app's method made ${pct(v("R0").cagr)} a year with a Sharpe ratio of ${num(v("R0").sharpe)}, below equal weight (t = ${num(p3.t_stat, 1)}). Picking the best of 5,000 random portfolios mostly picks the luckiest past means, and those do not repeat.`,
+    P3: `Random search made ${pct(v("R0").cagr)} a year with a Sharpe ratio of ${num(v("R0").sharpe)}, below equal weight (t = ${num(p3.t_stat, 1)}). Picking the best of 5,000 random portfolios mostly picks the luckiest past means, and those do not repeat.`,
   };
   return (
     <ul className="tests">
@@ -668,7 +668,7 @@ function Build({ research }: { research: Research }) {
               40 most traded at {fmtDate(research.latest_rebalance, { month: "short", year: "numeric" })}
             </button>
             <button className="reset" onClick={() => setSelected(ORIGINAL_DEFAULT)}>
-              The original app's default
+              The 2024 version's default
             </button>
             <button className="reset" onClick={() => setSelected([])}>
               Clear
@@ -801,13 +801,13 @@ function Method({ research }: { research: Research }) {
       <ul className="method">
         <li>
           <strong>Universe</strong>
-          The {n} JSE tickers from the original app that Yahoo Finance still serves. At each month end, the 40 with the highest median traded
+          The {n} JSE tickers from the 2024 version that Yahoo Finance still serves. At each month end, the 40 with the highest median traded
           value over the previous three months, among those with two years of history.
         </li>
         <li>
           <strong>Rules</strong>
           Long only, rebalanced monthly, weights drift between rebalances. Minimum variance and maximum Sharpe use Ledoit-Wolf shrinkage and a 10%
-          cap; equal risk contribution solves Spinu's convex problem. The original method is reproduced as written: weekly returns, 5,000
+          cap; equal risk contribution solves Spinu's convex problem. Random search is reproduced as the 2024 version ran it: weekly returns, 5,000
           uniform draws, no risk-free rate.
         </li>
         <li>

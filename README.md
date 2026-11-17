@@ -6,8 +6,8 @@ Live dashboard: https://mdingi-jse-risk.azurewebsites.net (embedded at mdingi.co
 
 ## What is tested
 
-1. **Universe.** The 267 tickers from the original app. At each month end, the 40 most traded by median 63-day traded value among shares with at least two years of prices.
-2. **Rules.** R0 the original method (random weights, weekly log returns, three years); R1 equal weight; R2 inverse volatility; R3 minimum variance; R4 equal risk contribution; R5 maximum Sharpe. R3 to R5 use Ledoit-Wolf covariance and a 10% cap. Lookback (one or two years) chosen per rule on the design period.
+1. **Universe.** The 267 tickers from the 2024 version. At each month end, the 40 most traded by median 63-day traded value among shares with at least two years of prices.
+2. **Rules.** R0 random search (random weights, weekly log returns, three years); R1 equal weight; R2 inverse volatility; R3 minimum variance; R4 equal risk contribution; R5 maximum Sharpe. R3 to R5 use Ledoit-Wolf covariance and a 10% cap. Lookback (one or two years) chosen per rule on the design period.
 3. **Costs.** 10 bps a side plus 0.25% securities transfer tax on purchases, fixed before the backtest. Every rule is also re-priced on a JSE schedule (brokerage plus VAT, half-spread, Strate and levy, transfer tax) at institutional and retail rates. Weights drift between rebalances.
 4. **Risk models.** One-day 99% and 97.5% VaR and ES from historical simulation, a normal model, EWMA and filtered historical simulation on a GJR-GARCH-t, backtested with Kupiec, Christoffersen, the Basel traffic light and the Acerbi-Szekely ES test.
 5. **Stress.** The 2008 crisis, December 2015, Covid and the April 2025 tariff shock replayed on today's portfolios, plus correlation, volatility, rand and single-name shocks.
@@ -18,7 +18,7 @@ Validation January 2017 to September 2026, after costs, on total returns (Yahoo'
 
 | Rule | CAGR | Volatility | Sharpe | Max drawdown |
 | --- | --- | --- | --- | --- |
-| R0 Original method | 7.7% | 18.2% | 0.14 | −43.0% |
+| R0 Random search | 7.7% | 18.2% | 0.14 | −43.0% |
 | R1 Equal weight | 11.5% | 18.5% | 0.33 | −40.6% |
 | R3 Minimum variance | 4.0% | 14.8% | −0.10 | −39.2% |
 | R5 Maximum Sharpe | 11.3% | 19.5% | 0.31 | −36.6% |
@@ -26,8 +26,8 @@ Validation January 2017 to September 2026, after costs, on total returns (Yahoo'
 
 - Minimum variance did cut volatility (P1 passed), but its Sharpe ratio was significantly below equal weight's.
 - No covariance rule beat equal weight (P2 failed): maximum Sharpe came closest (t = −0.07).
-- The original method lost to equal weight (P3 failed, t = −2.58). No rule beat the Satrix 40.
-- At retail JSE costs (about 95 bps a round trip) the original method falls to 5.5% a year and a Sharpe ratio of 0.02; equal weight barely moves (11.1%, 0.31). No verdict changes.
+- Random search lost to equal weight (P3 failed, t = −2.58). No rule beat the Satrix 40.
+- At retail JSE costs (about 95 bps a round trip) random search falls to 5.5% a year and a Sharpe ratio of 0.02; equal weight barely moves (11.1%, 0.31). No verdict changes.
 - Only filtered historical simulation passed the VaR and ES backtests for all three portfolios tested; the normal, EWMA and plain historical models all failed.
 
 The universe is today's list of tickers, so shares that delisted before 2026 are missing; this flatters every rule. The Satrix 40 has no such bias (it held the delisted shares while they were listed), so "no rule beat the Satrix 40" would only be more true on a survivor-free universe. Research output, not investment advice.

@@ -73,7 +73,7 @@ def original(r_weekly: np.ndarray, sims: int = 5000, seed: int = 0, **_) -> np.n
 
 
 RULES = {
-    "R0": ("Original app", original),
+    "R0": ("Random search", original),
     "R1": ("Equal weight", equal),
     "R2": ("Inverse volatility", inverse_vol),
     "R3": ("Minimum variance", min_variance),

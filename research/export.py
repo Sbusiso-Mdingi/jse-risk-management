@@ -46,7 +46,7 @@ tests = [
      "verdict": "Passed" if T["P1"]["passed"] else "Failed", "detail": T["P1"]["vol"]},
     {"id": "P2", "claim": "Minimum variance, equal risk or maximum Sharpe has a higher Sharpe ratio than equal weight",
      "verdict": verdict(T["P2"]["passed"], T["P2"]["vs_R1"][best]["t_stat"]), "best": best, "detail": T["P2"]["vs_R1"]},
-    {"id": "P3", "claim": "The original app's method has a higher Sharpe ratio than equal weight",
+    {"id": "P3", "claim": "Random search (the best of 5,000 random portfolios) has a higher Sharpe ratio than equal weight",
      "verdict": verdict(T["P3"]["passed"], T["P3"]["vs_R1"]["t_stat"]), "detail": T["P3"]["vs_R1"]},
 ]
 
